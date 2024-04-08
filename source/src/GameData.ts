@@ -21,7 +21,7 @@ export let GameData: gameData = {
 
   spritesheets: [
 
-    { name: "player", path: "assets/images/player.png", width: 82, height: 70, frames: 50 },
+    { name: "cave2", path: "assets/map/cave2.png", width: 32, height: 32, spacing:13, margin:0},
 
   ],
   images: [
@@ -42,4 +42,8 @@ export let GameData: gameData = {
   scripts: [],
   fonts: [{ key: 'Nosifer' }, { key: 'Roboto' }, { key: 'Press+Start+2P' }, { key: 'Rubik+Doodle+Shadow' }, { key: 'Rubik+Glitch' }],
   bitmapfonts: [],
+  tilemaps:[{
+    key:'level-1',
+    path:"assets/map/cave.json"
+  }]
 };

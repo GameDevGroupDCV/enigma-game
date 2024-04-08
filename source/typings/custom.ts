@@ -69,8 +69,9 @@ interface SpritesheetsAsset {
   path: string;
   width: number;
   height: number;
-  frames: number;
+  frames?: number;
   spacing?: number;
+  margin?:number;
 }
 
 interface SoundAsset {
