@@ -3,7 +3,7 @@ export let GameData: gameData = {
     gameWidth: 1280,
     gameHeight: 640,
     bgColor: "#ffffff",
-    debug: false
+    debug: true
   },
 
   preloader: {
@@ -26,8 +26,8 @@ export let GameData: gameData = {
     {name: "player-jump", path: "assets/images/player/player-jump.png", width: 17, height: 34, frames: 1},
     {name: "player-landing", path: "assets/images/player/player-landing.png", width: 20, height: 35, frames: 1},
     {name: "player-run", path: "assets/images/player/player-run.png", width: 21, height: 33, frames: 8},
-    {name: "lever", path: "assets/images/image.png", width: 28.5, height:15, frames: 6},
-    {name: "gems", path: "assets/images/gems.png", width: 31.7, height:28, frames: 14 },
+    {name: "lever", path: "assets/images/image.png", width: 12, height:15, frames: 6},
+    {name: "gems", path: "assets/images/gems.png", width: 28, height:28, frames: 14 },
 
   ],
   images: [
