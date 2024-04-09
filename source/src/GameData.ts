@@ -1,7 +1,7 @@
 export let GameData: gameData = {
   globals: {
     gameWidth: 1280,
-    gameHeight: 800,
+    gameHeight: 640,
     bgColor: "#ffffff",
     debug: false
   },
@@ -14,17 +14,24 @@ export let GameData: gameData = {
     loadingText: "Caricamento...",
     loadingTextFont: "roboto",
     loadingTextComplete: "Tappa/clicca per iniziare!!",
-    loadingTextY: 700,
+    loadingTextY: 600,
     loadingBarColor: 0xff0000,
-    loadingBarY: 630,
+    loadingBarY: 490,
   },
 
   spritesheets: [
 
-    { name: "cave2", path: "assets/map/cave2.png", width: 32, height: 32, spacing:13, margin:0},
+    {name: "cave2", path: "assets/map/cave2.png", width: 32, height: 32, spacing:13, margin:0},
+    {name: "player-idle", path: "assets/images/player/player-idle.png", width: 19, height: 34, frames: 12},
+    {name: "player-jump", path: "assets/images/player/player-jump.png", width: 17, height: 34, frames: 1},
+    {name: "player-landing", path: "assets/images/player/player-landing.png", width: 20, height: 35, frames: 1},
+    {name: "player-run", path: "assets/images/player/player-run.png", width: 21, height: 33, frames: 8},
+    {name: "lever", path: "assets/images/image.png", width: 28.5, height:15, frames: 6},
+    {name: "gems", path: "assets/images/gems.png", width: 31.7, height:28, frames: 14 },
 
   ],
   images: [
+    {name: "bgenigma", path: "assets/images/bgenigma.png"},
 
   ],
   atlas: [],

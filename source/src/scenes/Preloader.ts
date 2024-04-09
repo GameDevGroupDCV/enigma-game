@@ -74,7 +74,7 @@ export default class Preloader extends Phaser.Scene {
             this.scene.stop("Preloader");
             //richiamiamo il metodo start della far partire la scena Intro
             //this.scene.start("Intro");
-            this.scene.start("GamePlay");
+            this.scene.start("Enigma");
 
           },
         });

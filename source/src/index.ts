@@ -7,6 +7,7 @@ import Preloader from "./scenes/Preloader";
 import GamePlay from "./scenes/GamePlay";
 import GameOver from "./scenes/GameOver";
 import Intro from "./scenes/Intro";
+import Enigma from "./scenes/Enigma";
 //importiamo GameData che contiene i valori globali del gioco
 import { GameData } from "./GameData";
 
@@ -36,11 +37,14 @@ window.addEventListener("load", () => {
       Preloader,
       Intro,
       GamePlay,
+      Enigma,
       GameOver
     ],
     physics: {
       default: "arcade",
-      arcade: { debug: GameData.globals.debug, }
+      arcade: { debug: GameData.globals.debug, 
+                gravity:{x:0, y:800}
+              }
     },
 
     input: {
