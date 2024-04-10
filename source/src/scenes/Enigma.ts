@@ -221,10 +221,10 @@ export default class Enigma extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.gems.forEach((gem:gems)=>{
       if(gem.stateGem){
-        gem.gem.anims.play('gems-active');
+        gem.gem.anims.play('gems-active', true);
       }
       else{
-        gem.gem.anims.play('gems-inactive');
+        gem.gem.anims.play('gems-inactive', true);
       }
     })
   }
