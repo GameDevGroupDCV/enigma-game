@@ -15,25 +15,15 @@ export default class Enigma extends Phaser.Scene {
     private _gem4:Phaser.GameObjects.Sprite;
     private _gem5:Phaser.GameObjects.Sprite;
 
-    private active1:boolean = false;
-    private active2:boolean = false;
-    private active3:boolean = false;
-    private active4:boolean = false;
-    private active5:boolean = false;
-
-    private activeGem1:boolean = false;
-    private activeGem2:boolean = false;
-    private activeGem3:boolean = false;
-    private activeGem4:boolean = false;
-    private activeGem5:boolean = false;
-
     private gems:Array<gems>
 
     private mainCamera:Phaser.Cameras.Scene2D.Camera;
 
+    private i:number = 0;
+
   constructor() {
     super({
-      key: "Enigma",
+      key: "enigma",
     });
   }
 
@@ -103,6 +93,7 @@ export default class Enigma extends Phaser.Scene {
 
         //leva 1
         if(gem.lever == this.gems[0].lever && gem.stateLever){
+          this.checkWin();
           if(this.gems[0].stateGem){
             this.gems[0].stateGem = false;
           }
@@ -115,6 +106,7 @@ export default class Enigma extends Phaser.Scene {
           else{
             this.gems[1].stateGem = true;
           }
+          this.checkWin();
         }
         else if(gem.lever == this.gems[0].lever && !gem.stateLever){
           this.gems[0].stateGem = false;
@@ -135,7 +127,7 @@ export default class Enigma extends Phaser.Scene {
           else{
             this.gems[4].stateGem = true;
           }
-
+          this.checkWin();
         }
         else if(gem.lever == this.gems[1].lever && !gem.stateLever){
           this.gems[0].stateGem = false;
@@ -164,6 +156,7 @@ export default class Enigma extends Phaser.Scene {
           else{
             this.gems[3].stateGem = true;
           }
+          this.checkWin();
         }
         else if(gem.lever == this.gems[2].lever && !gem.stateLever){
           this.gems[1].stateGem = false;
@@ -185,6 +178,7 @@ export default class Enigma extends Phaser.Scene {
           else{
             this.gems[2].stateGem = false;
           }
+          this.checkWin();
         }
         else if(gem.lever == this.gems[3].lever && !gem.stateLever){
           this.gems[1].stateGem = false;
@@ -206,6 +200,7 @@ export default class Enigma extends Phaser.Scene {
           else{
             this.gems[4].stateGem = true;
           }
+          this.checkWin();
         }
         else if(gem.lever == this.gems[4].lever && !gem.stateLever){
           this.gems[3].stateGem = false;
@@ -220,7 +215,7 @@ export default class Enigma extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     this.gems.forEach((gem:gems)=>{
-      if(gem.stateGem){
+      if(gem.stateGem == true){
         gem.gem.anims.play('gems-active', true);
       }
       else{
@@ -229,6 +224,16 @@ export default class Enigma extends Phaser.Scene {
     })
   }
 
+  checkWin():void{
+    let i = 0;
+    this.gems.forEach((gem:gems) =>{
+      if(gem.stateGem){
+        i++;
+      }
+    })
+
+    if(i == 5){this.scene.stop(); this.scene.resume('GamePlay')}
+  }
   
 
 

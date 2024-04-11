@@ -40,16 +40,16 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
 
         if(!this._cursors.left.isDown && !this._cursors.right.isDown && !this._cursors.up.isDown && !this._cursors.down.isDown){
             this._body.setVelocityX(0);
-            if(this._body.onFloor){this.anims.play('idle', true);}
+            if(this._body.onFloor()){this.anims.play('idle', true);}
         }
         if (this._cursors.left.isDown) {
             this.setFlipX(true);
-            if(this._body.onFloor){this.anims.play('run', true);}
+            if(this._body.onFloor()){this.anims.play('run', true);}
             this._body.setVelocityX(-200);
         }
         if (this._cursors.right.isDown) {
             this.setFlipX(false);
-            if(this._body.onFloor){this.anims.play('run', true);}
+            if(this._body.onFloor()){this.anims.play('run', true);}
             this._body.setVelocityX(200);
         }
         if (this._cursors.up.isDown && this._body.onFloor()) {

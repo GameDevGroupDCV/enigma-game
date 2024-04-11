@@ -2,7 +2,7 @@ export let GameData: gameData = {
   globals: {
     gameWidth: 1280,
     gameHeight: 640,
-    bgColor: "#ffffff",
+    bgColor: "#000000",
     debug: true
   },
 
@@ -32,6 +32,7 @@ export let GameData: gameData = {
   ],
   images: [
     {name: "bgenigma", path: "assets/images/bgenigma.png"},
+    {name:"bg-wood", path:"assets/images/bg/wood.png"}
 
   ],
   atlas: [],
