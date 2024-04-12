@@ -24,8 +24,8 @@ export default class Preloader extends Phaser.Scene {
     this._image = this.add
       .image(
         GameData.preloader.imageX,
-        GameData.preloader.imageY,
-        GameData.preloader.image
+        GameData.preloader.imageY-200,
+        "logo"
       )
       .setAlpha(0).setScale(.4);
 
@@ -39,7 +39,7 @@ export default class Preloader extends Phaser.Scene {
       .text(this.game.canvas.width / 2, GameData.preloader.loadingTextY, "")
       .setAlpha(1)
       .setDepth(1001)
-      .setOrigin(0.5, 1).setColor("#000000").setFontSize(40).setFontFamily(GameData.preloader.loadingTextFont);
+      .setOrigin(0.5, 1).setColor("#ffffff").setFontSize(40).setFontFamily(GameData.preloader.loadingTextFont);
   }
 
   loadAssets(): void {
@@ -74,7 +74,7 @@ export default class Preloader extends Phaser.Scene {
             this.scene.stop("Preloader");
             //richiamiamo il metodo start della far partire la scena Intro
             //this.scene.start("Intro");
-            this.scene.start("GamePlay");
+            this.scene.start("Intro");
 
           },
         });

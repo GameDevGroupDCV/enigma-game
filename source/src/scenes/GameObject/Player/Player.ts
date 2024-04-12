@@ -2,21 +2,20 @@ import GamePlay from "../../GamePlay";
 import IPlayer from "./IPlayer";
 
 export default class Player extends Phaser.GameObjects.Sprite implements IPlayer{
-    private config:genericConfig;
+    private config:playerConfig;
     private _animations:animationConfig[] = [
         {sprite:"player-idle", key:"idle", frames:[0,1,2,3,4,5,6,7,8,9,10,11], frameRate:13, yoyo:false, repeat:-1},
         {sprite:"player-jump", key:"jump", frames:[0], frameRate:13, yoyo:false, repeat:-1},
         {sprite:"player-landing", key:"landing", frames:[0], frameRate:13, yoyo:false, repeat:-1},
         {sprite:"player-run", key:"run", frames:[0,1,2,3,4,5,6,7], frameRate:13, yoyo:false, repeat:-1}
-
-
     ]
     
     private _body: Phaser.Physics.Arcade.Body;
     private _scene:GamePlay;
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    private life:number = 1;
 
-    constructor(params:genericConfig){
+    constructor(params:playerConfig){
         super(params.scene, params.x, params.y, params.key);
         this.config = params;
         this.initPlayer();
@@ -54,9 +53,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         }
         if (this._cursors.up.isDown && this._body.onFloor()) {
             this.anims.play('jump', true);
-            this._body.setVelocityY(-500);
+            this._body.setVelocityY(-520);
         }
-
 
     }
 
@@ -74,6 +72,17 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
                 this.config.scene.anims.create(_animation);
             }
         })
+    }
+
+    decreaseLife():boolean{
+        this.life--;
+        if(this.life == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 } 
 

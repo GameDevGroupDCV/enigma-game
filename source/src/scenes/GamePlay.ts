@@ -19,7 +19,7 @@ export default class GamePlay extends Phaser.Scene {
 
 
   create() {
-    this.player = new Player({scene:this, x:200, y:100, key:'player-idle'}).setScale(2);
+    this.player = new Player({scene:this, x:200, y:100, key:'player-idle', life:1}).setScale(1.5);
 
     this.createMap();
     this.cameras.main.setViewport(140, 195, 900,250);
@@ -27,7 +27,7 @@ export default class GamePlay extends Phaser.Scene {
     this.cameras.main.setAlpha(0.5);
     this.cameras.main.setZoom(1.58);
     
-    this.physics.add.collider(this.player, this.collisionLayer);
+    this.physics.add.collider(this.player, this.collisionLayer, this.onCollision, null, this);
     this.physics.add.overlap(this.player, this.overlapLayer, this.onOverlap, null, this);
   }
 
@@ -69,8 +69,10 @@ export default class GamePlay extends Phaser.Scene {
         tile.properties.death = false;
       }
       else{
-        this.scene.stop();
-        this.scene.start('GameOver');
+        if(this.player.decreaseLife()){
+          this.scene.stop();
+          this.scene.start('GameOver');
+        }
       }
     }
     if(tile.properties.enigma == true){
@@ -86,25 +88,34 @@ export default class GamePlay extends Phaser.Scene {
     if(tile.properties.interaction1 == true){
       tile.properties.interaction1 = false;
       this.registry.set("sign", 1);
-      this.scene.launch('Hud');
-      this.scene.bringToTop('Hud');
+      this.scene.launch('Sign');
+      this.scene.bringToTop('Sign');
       this.scene.pause();
     }
     if(tile.properties.interaction2 == true){
       tile.properties.interaction2 = false;
       this.registry.set("sign", 2);
-      this.scene.launch('Hud');
-      this.scene.bringToTop('Hud');
+      this.scene.launch('Sign');
+      this.scene.bringToTop('Sign');
       this.scene.pause();
     }
     if(tile.properties.interaction3 == true){
       tile.properties.interaction3 = false;
       this.registry.set("sign", 3);
-      this.scene.launch('Hud');
-      this.scene.bringToTop('Hud');
+      this.scene.launch('Sign');
+      this.scene.bringToTop('Sign');
       this.scene.pause();
     }
-    
+  }
+
+  onCollision(player: any, tile:any):void{
+    if(tile.properties.boss == true){
+      tile.properties.boss = false;
+      this.scene.launch('bossRoom');
+      this.scene.pause();
+      this.scene.bringToTop('bossRoom');
+      
+    }
   }
 }
 

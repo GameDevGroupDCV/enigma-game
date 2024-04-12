@@ -39,6 +39,9 @@ interface genericConfig {
   y: number;
   key: string;
 }
+interface playerConfig extends genericConfig{
+  life:number;
+}
 
 interface ImageAsset {
   name: string;

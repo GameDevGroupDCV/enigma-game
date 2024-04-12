@@ -30,7 +30,7 @@ export default class Boot extends Phaser.Scene {
     //settiamo il colore di sfondo della scena
     this.cameras.main.setBackgroundColor("#ffffff");
     //precarichiamo l'immagine del logo
-    this.load.image("logo", "assets/images/phaser.png");
+    this.load.image("logo", "assets/images/logo.jpeg");
 
   }
 
