@@ -10,6 +10,7 @@ import Intro from "./scenes/Intro";
 import Enigma from "./scenes/Enigma";
 import bossRoom from "./scenes/bossRoom";
 import Sign from "./scenes/Sign";
+import LockZaino from "./scenes/lockZaino";
 //importiamo GameData che contiene i valori globali del gioco
 import { GameData } from "./GameData";
 
@@ -42,7 +43,8 @@ window.addEventListener("load", () => {
       Enigma,
       GameOver,
       bossRoom,
-      Sign
+      Sign, 
+      LockZaino
     ],
     physics: {
       default: "arcade",

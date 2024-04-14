@@ -10,6 +10,7 @@ export default class GamePlay extends Phaser.Scene {
   private tileset:Phaser.Tilemaps.Tileset;
   private player:Player;
   private enigmaCompleted:boolean = false;
+  
 
   constructor() {
     super({
@@ -29,7 +30,11 @@ export default class GamePlay extends Phaser.Scene {
     
     this.physics.add.collider(this.player, this.collisionLayer, this.onCollision, null, this);
     this.physics.add.overlap(this.player, this.overlapLayer, this.onOverlap, null, this);
+
+    
   }
+
+
 
   update(time: number, delta: number): void {
     this.player.updatePlayer(time, delta);
@@ -104,6 +109,11 @@ export default class GamePlay extends Phaser.Scene {
       this.registry.set("sign", 3);
       this.scene.launch('Sign');
       this.scene.bringToTop('Sign');
+      this.scene.pause();
+    }
+    if(tile.properties.bag == true){
+      this.scene.launch('LockZaino');
+      this.scene.bringToTop('LockZaino');
       this.scene.pause();
     }
   }

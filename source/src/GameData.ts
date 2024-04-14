@@ -36,7 +36,11 @@ export let GameData: gameData = {
     {name:"golem-idle", path:"assets/images/boss/Golem_1_idle.png", width:90, height:64, frames:8},
     {name:"golem-walk", path:"assets/images/boss/Golem_1_walk.png", width:90, height:64, frames:10},
 
-    {name:"stalattite", path:"assets/images/stalattite.png", width:304, height:436, frames:1}
+    {name:"stalattite", path:"assets/images/stalattite.png", width:304, height:436, frames:1}, 
+
+    {name:"eg2", path:"assets/map/eg2.png", width:32, height:32, spacing:0, margin:0},
+
+    {name:"key", path:"assets/images/key.png", width:21, height:47, frames:27}
 
   ],
   images: [
@@ -51,6 +55,7 @@ export let GameData: gameData = {
     {name:"logo", path:"assets/images/logo.jpeg"},
     {name:"b_unpressed", path:"assets/images/Restart_Pressed.png"},
     {name:"b_pressed", path:"assets/images/Restart_Unpressed.png"},
+    {name:"lock-bg", path:"assets/images/bg/lock.png"}
 
   ],
   atlas: [],
@@ -77,6 +82,20 @@ export let GameData: gameData = {
     {
       key:'level-3',
       path:"assets/map/boss.json"
-    }
+    },
+    {
+      key:'level-2-lock1',
+      path:"assets/map/level1.json"
+    },
+    {
+      key:'level-2-lock2',
+      path:"assets/map/level2.json"
+    },
+    {
+      key:'level-2-lock3',
+      path:"assets/map/level3.json"
+    },
+    
+  
   ]
 };
