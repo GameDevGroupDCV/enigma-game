@@ -23,11 +23,8 @@ export default class GamePlay extends Phaser.Scene {
     this.player = new Player({scene:this, x:200, y:100, key:'player-idle', life:1}).setScale(1.5);
 
     this.createMap();
-    this.cameras.main.setViewport(140, 195, 900,250);
     this.cameras.main.startFollow(this.player);
-    this.cameras.main.setAlpha(0.5);
-    this.cameras.main.setZoom(1.58);
-    
+
     this.physics.add.collider(this.player, this.collisionLayer, this.onCollision, null, this);
     this.physics.add.overlap(this.player, this.overlapLayer, this.onOverlap, null, this);
 
@@ -38,11 +35,7 @@ export default class GamePlay extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     this.player.updatePlayer(time, delta);
-    if(this.enigmaCompleted){
-      this.cameras.main.setViewport(0, 0, GameData.globals.gameWidth,GameData.globals.gameHeight);
-      this.cameras.main.setAlpha(1);
-      this.cameras.main.setZoom(1);
-    }
+    this.updateMap();
   }
 
   createMap():void{
@@ -65,6 +58,8 @@ export default class GamePlay extends Phaser.Scene {
 
     this.collisionLayer.setCollisionByProperty({collide:true});
     this.overlapLayer.setCollisionByProperty({collide:true});
+
+    console.log(this.map.getTileAtWorldXY(this.player.x,this.player.y, false, this.cameras.main, this.layerWorld));
   }
 
   onOverlap(player:any, tile:any){
@@ -112,9 +107,7 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.pause();
     }
     if(tile.properties.bag == true){
-      this.scene.launch('LockZaino');
-      this.scene.bringToTop('LockZaino');
-      this.scene.pause();
+      
     }
   }
 
@@ -126,6 +119,21 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.bringToTop('bossRoom');
       
     }
+  }
+
+
+
+
+
+  
+  updateMap():void{
+    const origin:Phaser.Tilemaps.Tile = this.map.getTileAt(this.player.x, this.player.y, false, this.layerWorld);
+    //console.log(origin);
+    this.map.forEachTile((tile:Phaser.Tilemaps.Tile) =>{
+      const dist:number = Phaser.Math.Distance.Snake(this.player.x, this.player.y, tile.x, tile.y);
+      tile.setAlpha(1 - 0.1 * dist);
+    },this);
+    
   }
 }
 

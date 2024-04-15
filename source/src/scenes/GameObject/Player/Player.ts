@@ -28,7 +28,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         this._scene.physics.world.enable(this);
         this._body = <Phaser.Physics.Arcade.Body>this.body;
         this._scene.physics.world.enableBody(this);
-        this.setDepth(10);
+        this.setDepth(9);
         this.createAnimation();
         this._cursors = this._scene.input.keyboard.createCursorKeys();
         

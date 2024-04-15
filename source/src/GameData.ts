@@ -40,7 +40,7 @@ export let GameData: gameData = {
 
     {name:"eg2", path:"assets/map/eg2.png", width:32, height:32, spacing:0, margin:0},
 
-    {name:"key", path:"assets/images/key.png", width:21, height:47, frames:27}
+    {name:"lock", path:"assets/images/lock.png", width:24, height:32, frames:17}
 
   ],
   images: [
