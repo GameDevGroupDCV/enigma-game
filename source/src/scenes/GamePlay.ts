@@ -111,7 +111,9 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.pause();
     }
     if(tile.properties.bag == true){
-      
+      this.scene.launch('LockZaino');
+      this.scene.bringToTop('LockZaino');
+      this.scene.pause();
     }
   }
 

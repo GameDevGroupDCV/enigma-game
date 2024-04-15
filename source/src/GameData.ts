@@ -40,7 +40,9 @@ export let GameData: gameData = {
 
     {name:"eg2", path:"assets/map/eg2.png", width:32, height:32, spacing:0, margin:0},
 
-    {name:"lock", path:"assets/images/lock.png", width:24, height:32, frames:17}
+    {name:"lock", path:"assets/images/lock.png", width:24, height:32, frames:17},
+
+    
 
   ],
   images: [
@@ -55,7 +57,8 @@ export let GameData: gameData = {
     {name:"logo", path:"assets/images/logo.jpeg"},
     {name:"b_unpressed", path:"assets/images/Restart_Pressed.png"},
     {name:"b_pressed", path:"assets/images/Restart_Unpressed.png"},
-    {name:"lock-bg", path:"assets/images/bg/lock.png"}
+    {name:"lock-bg", path:"assets/images/bg/lock.png"},
+    {name:"bg-lock", path:"assets/images/bg/bg-lock.png"}
 
   ],
   atlas: [],
