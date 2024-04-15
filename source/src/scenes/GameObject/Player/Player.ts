@@ -14,7 +14,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     private _scene:GamePlay;
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private life:number = 1;
-
+    private audio:Phaser.Sound.WebAudioSound;
     constructor(params:playerConfig){
         super(params.scene, params.x, params.y, params.key);
         this.config = params;
@@ -32,8 +32,16 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         this.createAnimation();
         this._cursors = this._scene.input.keyboard.createCursorKeys();
         
+        this.audio = this._scene.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
     }
 
+    run():void{
+        var traccia:Phaser.Sound.BaseSound[];
+        this.anims.play('run',true);
+        if(!this.audio.isPlaying){
+            this.audio.play('Camminata_Del_Player_2');
+        }
+    }
 
     updatePlayer(time: number, delta: number): void {
 
@@ -43,18 +51,24 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         }
         if (this._cursors.left.isDown) {
             this.setFlipX(true);
-            if(this._body.onFloor()){this.anims.play('run', true);}
+            if(this._body.onFloor()){this.run();}
             this._body.setVelocityX(-200);
         }
         if (this._cursors.right.isDown) {
             this.setFlipX(false);
-            if(this._body.onFloor()){this.anims.play('run', true);}
+            if(this._body.onFloor()){this.run();}
             this._body.setVelocityX(200);
+            this.run();
         }
         if (this._cursors.up.isDown && this._body.onFloor()) {
             this.anims.play('jump', true);
+            this._scene.sound.playAudioSprite("sfx","Salto",{loop:false,volume: 5});
             this._body.setVelocityY(-520);
         }
+        if(this._body.velocity.y > 0){
+            this.anims.play('landing', true);
+        }
+        
 
     }
 

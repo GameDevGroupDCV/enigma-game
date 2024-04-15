@@ -86,7 +86,6 @@ interface AudioSpriteAsset {
   name: string;
   jsonpath: string;
   paths: Array<string>;
-  instance: { instance: number };
 }
 
 interface BitmapfontAsset {

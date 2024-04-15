@@ -74,7 +74,7 @@ export default class Preloader extends Phaser.Scene {
             this.scene.stop("Preloader");
             //richiamiamo il metodo start della far partire la scena Intro
             //this.scene.start("Intro");
-            this.scene.start("LockZaino");
+            this.scene.start("GamePlay");
 
           },
         });
@@ -157,8 +157,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.audioSprite(
           element.name,
           element.jsonpath,
-          element.paths,
-          element.instance
+          element.paths
         );
       });
   }

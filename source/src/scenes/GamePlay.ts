@@ -63,6 +63,10 @@ export default class GamePlay extends Phaser.Scene {
   }
 
   onOverlap(player:any, tile:any){
+    if(tile.properties.text == true){
+      console.log("Dialogo");
+      tile.properties.text = false;
+    }
     if(tile.properties.death == true){
       console.log("death");
       if(this.enigmaCompleted){

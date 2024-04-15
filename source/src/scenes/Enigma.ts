@@ -60,11 +60,11 @@ export default class Enigma extends Phaser.Scene {
     let _image:Phaser.GameObjects.Image = this.add.image(0, 0,"bgenigma").setOrigin(0,0);
     
     
-    this._lever1 = this.add.sprite((213.33*1), 500, 'lever', 0).setScale(4.5).setInteractive(); 
-    this._lever2 = this.add.sprite((213.33*2), 500, 'lever', 0).setScale(4.5).setInteractive();
-    this._lever3 = this.add.sprite((213.33*3), 500, 'lever', 0).setScale(4.5).setInteractive();
-    this._lever4 = this.add.sprite((213.33*4), 500, 'lever', 0).setScale(4.5).setInteractive();
-    this._lever5 = this.add.sprite((213.33*5), 500, 'lever', 0).setScale(4.5).setInteractive();
+    this._lever1 = this.add.sprite((213.33*1), 500, 'lever', 0).setInteractive(); 
+    this._lever2 = this.add.sprite((213.33*2), 500, 'lever', 0).setInteractive();
+    this._lever3 = this.add.sprite((213.33*3), 500, 'lever', 0).setInteractive();
+    this._lever4 = this.add.sprite((213.33*4), 500, 'lever', 0).setInteractive();
+    this._lever5 = this.add.sprite((213.33*5), 500, 'lever', 0).setInteractive();
     
     this._gem1 = this.add.sprite((213.33*1), 100, 'gems', 13).setScale(1.45).setInteractive()
     this._gem2 = this.add.sprite((213.33*2), 200, 'gems', 13).setScale(1.45).setInteractive()

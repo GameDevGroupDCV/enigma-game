@@ -27,7 +27,7 @@ export let GameData: gameData = {
     {name: "player-jump", path: "assets/images/player/player-jump.png", width: 17, height: 34, frames: 1},
     {name: "player-landing", path: "assets/images/player/player-landing.png", width: 20, height: 35, frames: 1},
     {name: "player-run", path: "assets/images/player/player-run.png", width: 21, height: 33, frames: 8},
-    {name: "lever", path: "assets/images/image.png", width: 12, height:15, frames: 6},
+    {name: "lever", path: "assets/images/image.png", width: 48, height:60, frames: 6},
     {name: "gems", path: "assets/images/gems.png", width: 28, height:28, frames: 14 },
 
     {name:"golem-attack", path:"assets/images/boss/Golem_1_attack.png", width:90, height:64, frames:11},
@@ -67,8 +67,8 @@ export let GameData: gameData = {
 
   ],
   audios: [
-
-  ],
+    {name: "sfx",jsonpath: "assets/sounds/sfx.json",paths: ["assets/sounds/AudioGioco.ogg", "assets/sounds/AudioGioco.m4a"]},
+    ],
 
   scripts: [],
   fonts: [{ key: 'Nosifer' }, { key: 'Roboto' }, { key: 'Press+Start+2P' }, { key: 'Rubik+Doodle+Shadow' }, { key: 'Rubik+Glitch' }],
