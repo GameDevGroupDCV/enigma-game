@@ -99,6 +99,7 @@ export default class bossRoom extends Phaser.Scene{
                 this.cameras.main.shake(200, 0.01);
                 var stalattite:Stalattite = <Stalattite>this.physics.closest(this.player, this.stalattiti.getChildren());
                 stalattite.setGravity();
+                this.golem.add_audio_hit();
                 this.attackBoolean = false;
 
             }
@@ -111,6 +112,7 @@ export default class bossRoom extends Phaser.Scene{
 
     onCollisionGolem():void{
         if(this.player.decreaseLife()){
+            this.golem.stop_run_audio();
             this.scene.stop();
             this.scene.start('GameOver')
         }

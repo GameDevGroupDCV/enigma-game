@@ -72,7 +72,6 @@ export let GameData: gameData = {
   audios: [
     {name: "sfx",jsonpath: "assets/sounds/sfx.json",paths: ["assets/sounds/AudioGioco.ogg", "assets/sounds/AudioGioco.m4a"]},
     ],
-
   scripts: [],
   fonts: [{ key: 'Nosifer' }, { key: 'Roboto' }, { key: 'Press+Start+2P' }, { key: 'Rubik+Doodle+Shadow' }, { key: 'Rubik+Glitch' }],
   bitmapfonts: [],

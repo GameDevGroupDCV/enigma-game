@@ -36,7 +36,6 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     }
 
     run():void{
-        var traccia:Phaser.Sound.BaseSound[];
         this.anims.play('run',true);
         if(!this.audio.isPlaying){
             this.audio.play('Camminata_Del_Player_2');
@@ -58,7 +57,6 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
             this.setFlipX(false);
             if(this._body.onFloor()){this.run();}
             this._body.setVelocityX(200);
-            this.run();
         }
         if (this._cursors.up.isDown && this._body.onFloor()) {
             this.anims.play('jump', true);

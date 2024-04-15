@@ -6,6 +6,9 @@ export default class Boss extends Phaser.GameObjects.Sprite implements IBoss{
     private _body:Phaser.Physics.Arcade.Body;
     public walking:boolean = true;
     private life = 3;
+    private audio_run:Phaser.Sound.WebAudioSound;
+    private audio_explosion: Phaser.Sound.WebAudioSound;
+    private audio_hit: Phaser.Sound.WebAudioSound;
 
     private _animations:animationConfig[] = [
         {sprite:"golem-attack", key:"golem-attack", frames:[0,1,2,3,4,5,6,7,8,9,10], frameRate:13, yoyo:false, repeat:0},
@@ -32,9 +35,33 @@ export default class Boss extends Phaser.GameObjects.Sprite implements IBoss{
         this.createAnimation();
 
         this.anims.play('golem-idle');
+
+        this.audio_run = this.config.scene.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
+        this.audio_explosion = this.config.scene.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
+        this.audio_hit = this.config.scene.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
         
         
     }
+
+    stop_run_audio():void{
+        this.audio_run.stop();
+    }
+
+    add_audio_death():void{
+        this.audio_explosion.play('Esplosione_del_boss');
+    }
+
+    add_audio_hit():void{
+        this.audio_hit.play('Colpo_del_Boss');
+    }
+
+    run():void{
+        if(!this.audio_run.isPlaying && !this.decreaseLife()){
+            this.audio_run.play('Camminata_Del_Golem');
+        }
+        this.anims.play('golem-walk', true);
+    }
+
     updateBoss(time: number, delta: number): void {
         if(this.walking){
             if(this._body.velocity.x < 0){
@@ -66,6 +93,8 @@ export default class Boss extends Phaser.GameObjects.Sprite implements IBoss{
     decreaseLife():boolean{
         this.life--;
         if(this.life == 0){
+            this.stop_run_audio();
+            this.add_audio_death();
             return true;
         }
         else{
