@@ -66,11 +66,11 @@ export default class Boss extends Phaser.GameObjects.Sprite implements IBoss{
         if(this.walking){
             if(this._body.velocity.x < 0){
                 this.setFlipX(true);
-                 this.anims.play('golem-walk', true);
+                this.run();
             }
             else if(this.body.velocity.x > 0){
                 this.setFlipX(false);
-                this.anims.play('golem-walk', true);   
+                this.run();   
             }
         }
     }

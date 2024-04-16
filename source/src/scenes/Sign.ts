@@ -1,5 +1,5 @@
 import GamePlay from "./GamePlay";
-
+import { GameData } from "../GameData";
 export default class Sign extends Phaser.Scene {
 
   constructor() {
@@ -19,16 +19,14 @@ export default class Sign extends Phaser.Scene {
       this.scene.stop();
       this.scene.resume('GamePlay');
     })
-    this.text = this.add.text(325,250,"ciao", {fontFamily:"enigmaFont"}).setFontSize(70).setColor('black');
+    this.text = this.add.text(GameData.globals.gameWidth/2,GameData.globals.gameHeight/2,"", {fontFamily:"alagard"}).setFontSize(60).setColor('black').setOrigin(0.5,0.5);
 
     if(this.registry.get('sign') == 1){
-      this.text.setText("Scopri il meccanismo \nper attivare la luce nascosta");
+      this.text.setText("Con un tocco giusto, rivelo la chiarezza.\nAttiva il mio ingranaggio con abilità,\ne la luce nascosta sarà la tua certezza.");
     }
-    if(this.registry.get('sign') == 2){
-      this.text.setText("Che ci fa qui uno zaino?");
-    }
+
     if(this.registry.get('sign') == 3){
-      this.text.setText("Lasciate ogni speranza \no voi che entrate");
+      this.text.setText("Nella grotta oscura, il golem s'aggira,\ncon l'astuzia come spada, la vittoria \nsi mira tra rocce appuntite e buio profondo, \nl'ingegno è l'arma che tiene il mondo");
     }
 
   }

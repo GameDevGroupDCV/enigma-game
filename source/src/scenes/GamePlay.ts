@@ -10,7 +10,8 @@ export default class GamePlay extends Phaser.Scene {
   private tileset:Phaser.Tilemaps.Tileset;
   private player:Player;
   private enigmaCompleted:boolean = false;
-  
+      private audio:Phaser.Sound.WebAudioSound;
+
 
   constructor() {
     super({
@@ -20,7 +21,7 @@ export default class GamePlay extends Phaser.Scene {
 
 
   create() {
-    this.player = new Player({scene:this, x:200, y:100, key:'player-idle', life:1}).setScale(1.5);
+    this.player = new Player({scene:this, x:200, y:350, key:'player-idle', life:1}).setScale(1.5);
 
     this.createMap();
     this.cameras.main.startFollow(this.player);
@@ -36,9 +37,16 @@ export default class GamePlay extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.player.updatePlayer(time, delta);
     this.updateMap();
+
+    if(this.registry.get('zainoUnblocked')){
+      this.events.emit('inventoryBag');
+      console.log("zainoUnblocked è false")
+      this.registry.set('zainoUnblocked', false);
+    }
   }
 
   createMap():void{
+    this.audio = this.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
     if(this.map != null){this.map.destroy};
     this.map = this.make.tilemap({key:"level-1"});
     this.cameras.main.setBounds(0,0,this.map.widthInPixels, this.map.heightInPixels);
@@ -64,7 +72,7 @@ export default class GamePlay extends Phaser.Scene {
 
   onOverlap(player:any, tile:any){
     if(tile.properties.text == true){
-      this.events.emit("onText");
+      this.events.emit("onText", [this.player]);
       tile.properties.text = false;
       console.log("dialog");
     }
@@ -77,6 +85,7 @@ export default class GamePlay extends Phaser.Scene {
         if(this.player.decreaseLife()){
           this.scene.stop();
           this.scene.start('GameOver');
+          this.audio.play('');
         }
       }
     }
@@ -112,8 +121,11 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.pause();
     }
     if(tile.properties.bag == true){
+      tile.properties.bag = false;
       this.scene.launch('LockZaino');
       this.scene.bringToTop('LockZaino');
+      this.scene.bringToTop('Dialog');
+      this.events.emit('textZaino');
       this.scene.pause();
     }
   }
@@ -129,7 +141,12 @@ export default class GamePlay extends Phaser.Scene {
   }
 
 
-
+  playerBlock():void{
+    this.player.setDialog(true);
+  }
+  playerUnBLock():void{
+    this.player.setDialog(false);
+  }
 
 
   

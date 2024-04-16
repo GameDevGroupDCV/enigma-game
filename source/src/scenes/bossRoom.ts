@@ -107,6 +107,8 @@ export default class bossRoom extends Phaser.Scene{
                 this.golem.walking = true;
                 this.attackBoolean = true;
             }
+        }else{
+            console.log("non sono entrato");
         }
     }
 

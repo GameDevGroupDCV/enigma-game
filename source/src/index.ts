@@ -14,6 +14,7 @@ import LockZaino from "./scenes/lockZaino";
 import Dialogs from "./scenes/Dialog";
 //importiamo GameData che contiene i valori globali del gioco
 import { GameData } from "./GameData";
+import Flashback from "./scenes/FlashBack";
 
 //il listener per l'evento load della pagina
 //questo evento viene lanciato quando la pagina è stata caricata
@@ -46,7 +47,7 @@ window.addEventListener("load", () => {
       bossRoom,
       Sign, 
       LockZaino, 
-      Dialogs
+      Dialogs, Flashback
     ],
     physics: {
       default: "arcade",

@@ -8,6 +8,7 @@ export default class GameOver extends Phaser.Scene {
   protected _modal: Phaser.GameObjects.Image;
   protected _text: Phaser.GameObjects.Text;
   protected _bg: Phaser.GameObjects.TileSprite;
+  private audio:Phaser.Sound.WebAudioSound;
 
   constructor() {
     super({
@@ -18,6 +19,7 @@ export default class GameOver extends Phaser.Scene {
 
   create() {
     console.log("GameOver");
+    this.audio = this.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
     this._bg = this.add.tileSprite(0,0,1280,640,"bg1").setOrigin(0,0);
     this._text = this.add.text((this.game.canvas.width / 2),(this.game.canvas.height / 2),"Game Over").setFontSize(40).setOrigin(0.5,0.5).setFontFamily('enigmaFont');
     this._button_gameOver = this.add.image((this.game.canvas.width / 2),(this.game.canvas.height / 2)+100,"b_unpressed").setScale(.07);
@@ -35,8 +37,11 @@ export default class GameOver extends Phaser.Scene {
           }
       ).on(
           "pointerdown",()=>{
+              this.audio.play('Click');
               this.scene.stop("GameOver");
               this.scene.start("GamePlay");
+              this.scene.start("Dialog");
+              this.scene.bringToTop("Dialog");
           }
       ).setInteractive();
 

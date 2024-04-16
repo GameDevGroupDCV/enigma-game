@@ -56,6 +56,7 @@ export default class LockZaino extends Phaser.Scene{
                         console.log("hai vinto");
                         this.lockImage.anims.play('lock-open', true);
                         this.lockImage.on('animationcomplete', () =>{
+                            this.registry.set('zainoUnblocked', true);
                             this.scene.resume('GamePlay');
                             this.scene.stop();
                         })

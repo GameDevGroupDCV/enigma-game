@@ -11,6 +11,7 @@ export default class Intro extends Phaser.Scene{
     protected _credict_close: Phaser.GameObjects.Image; 
     protected _logo:Phaser.GameObjects.Image;
     protected _bg: Phaser.GameObjects.TileSprite;
+    private audio:Phaser.Sound.WebAudioSound;
 
     constructor(){
         super({key:"Intro"});
@@ -21,6 +22,7 @@ export default class Intro extends Phaser.Scene{
         this._logo = this.add.image((this.game.canvas.width / 2),220,"logo").setScale(0.3).setAlpha(0.8);
         this._button_play = this.add.image((this.game.canvas.width / 2)-100,(this.game.canvas.height / 2)+150,"play_unpressed").setScale(.07);
         this._button_info = this.add.image((this.game.canvas.width / 2)+100,(this.game.canvas.height / 2)+150,"info_unpressed").setScale(.07);
+        this.audio = this.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
         this.graphics();
         this.bottoni();
     }
@@ -37,7 +39,8 @@ export default class Intro extends Phaser.Scene{
         ).on(
             "pointerdown",()=>{
                 this.scene.stop("Intro")
-                this.scene.start("GamePlay");
+                this.scene.start("FlashBack");
+                this.audio.play('Click');
             }
         ).setInteractive();
 
@@ -53,6 +56,7 @@ export default class Intro extends Phaser.Scene{
         .on(
             "pointerdown",()=>{
                 this.credits();
+                this.audio.play('Click');
             }
         ).setInteractive();
     }
@@ -64,6 +68,7 @@ export default class Intro extends Phaser.Scene{
         this._credict_close = this.add.image((GameData.globals.gameWidth/2)+250,(GameData.globals.gameHeight/2)-160,"credit_close").on(
             "pointerdown",()=>{
                 this.closeCredit();
+                this.audio.play('Click');
             }
         ).setInteractive();
 
