@@ -15,6 +15,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private life:number = 1;
     private audio:Phaser.Sound.WebAudioSound;
+    
     constructor(params:playerConfig){
         super(params.scene, params.x, params.y, params.key);
         this.config = params;

@@ -61,7 +61,8 @@ export let GameData: gameData = {
     {name:"lock-bg", path:"assets/images/bg/lock.png"},
     {name:"bg-lock", path:"assets/images/bg/bg-lock.png"},
     {name: "diario", path:"assets/images/diario.png"},
-    {name: "ring", path:"assets/images/gold_ring.png"}
+    {name: "ring", path:"assets/images/gold_ring.png"},
+    {name:"bg-flash", path:"assets/images/bg/flashback-bg.png"},
 
   ],
   atlas: [],
