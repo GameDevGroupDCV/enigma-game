@@ -72,7 +72,8 @@ export default class GamePlay extends Phaser.Scene {
 
   onOverlap(player:any, tile:any){
     if(tile.properties.text == true){
-      this.events.emit("onText", [this.player]);
+      this.events.emit("onText");
+      console.log("dialogo");
       tile.properties.text = false;
       console.log("dialog");
     }
@@ -131,6 +132,7 @@ export default class GamePlay extends Phaser.Scene {
   }
 
   onCollision(player: any, tile:any):void{
+
     if(tile.properties.boss == true){
       tile.properties.boss = false;
       this.scene.launch('bossRoom');

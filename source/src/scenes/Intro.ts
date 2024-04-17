@@ -39,7 +39,7 @@ export default class Intro extends Phaser.Scene{
         ).on(
             "pointerdown",()=>{
                 this.scene.stop("Intro")
-                this.scene.start("FlashBack");
+                this.scene.start("GamePlay");
                 this.audio.play('Click');
             }
         ).setInteractive();

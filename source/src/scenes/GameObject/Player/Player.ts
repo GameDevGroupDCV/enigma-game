@@ -7,7 +7,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         {sprite:"player-idle", key:"idle", frames:[0,1,2,3,4,5,6,7,8,9,10,11], frameRate:13, yoyo:false, repeat:-1},
         {sprite:"player-jump", key:"jump", frames:[0], frameRate:13, yoyo:false, repeat:-1},
         {sprite:"player-landing", key:"landing", frames:[0], frameRate:13, yoyo:false, repeat:-1},
-        {sprite:"player-run", key:"run", frames:[0,1,2,3,4,5,6,7], frameRate:13, yoyo:false, repeat:-1}
+        {sprite:"player-run", key:"run", frames:[0,1,2,3,4,5,6,7], frameRate:13, yoyo:false, repeat:-1}, 
+        {sprite:"player-ledge", key:"ledge", frames:[0,1,2,3,4,5], frameRate:13, yoyo:false, repeat:-1}
     ]
     private dialog:boolean = false;
     private _body: Phaser.Physics.Arcade.Body;
@@ -15,6 +16,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private life:number = 1;
     private audio:Phaser.Sound.WebAudioSound;
+    private grab:boolean = false;
     
     constructor(params:playerConfig){
         super(params.scene, params.x, params.y, params.key);
@@ -45,26 +47,26 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
 
     updatePlayer(time: number, delta: number): void {
         if(!this.dialog){
-            if(!this._cursors.left.isDown && !this._cursors.right.isDown && !this._cursors.up.isDown && !this._cursors.down.isDown){
+            if(!this._cursors.left.isDown && !this._cursors.right.isDown && !this._cursors.up.isDown && !this._cursors.down.isDown && !this.grab){
                 this._body.setVelocityX(0);
                 if(this._body.onFloor()){this.anims.play('idle', true);}
             }
-            if (this._cursors.left.isDown) {
+            if (this._cursors.left.isDown && !this.grab) {
                 this.setFlipX(true);
                 if(this._body.onFloor()){this.run();}
                 this._body.setVelocityX(-200);
             }
-            if (this._cursors.right.isDown) {
+            if (this._cursors.right.isDown && !this.grab) {
                 this.setFlipX(false);
                 if(this._body.onFloor()){this.run();}
                 this._body.setVelocityX(200);
             }
-            if (this._cursors.up.isDown && this._body.onFloor()) {
+            if (this._cursors.up.isDown && this._body.onFloor() && !this.grab) {
                 this.anims.play('jump', true);
                 this._scene.sound.playAudioSprite("sfx","Salto",{loop:false,volume: 5});
                 this._body.setVelocityY(-520);
             }
-            if(this._body.velocity.y > 0){
+            if(this._body.velocity.y > 0 && !this.grab){
                 this.anims.play('landing', true);
             }
         }
@@ -106,6 +108,16 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
 
     setDialog(value:boolean):void{
         this.dialog = value;
+    }
+
+    setGravity(value:boolean){
+        this._body.setAllowGravity(value);
+        this._body.setVelocity(0,0);
+        console.log(this._body.allowGravity + "" + this._body.velocity.x + " " + this._body.velocity.y);
+    }
+
+    setGrab(value:boolean){
+        this.grab = value;
     }
 } 
 

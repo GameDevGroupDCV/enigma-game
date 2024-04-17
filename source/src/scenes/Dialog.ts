@@ -84,9 +84,13 @@ export default class Dialogs extends Phaser.Scene {
   onText():void{
       console.log("emit");
       this.GamePlay.playerBlock();
+      console.log("ho bloccato il player");
       this.bg_image.setVisible(true);
+      console.log("ho reso visibilie l'immagine")
       this.text.setAlpha(1);
+      console.log("setto l'alpha")
       this.text.setText(this.messagesGamePlay[this.messageGamePlayIndex]);
+      console.log("idice" + " " + this.messageGamePlayIndex)
       this.time.addEvent({
         delay:1500,
         callback: () =>{

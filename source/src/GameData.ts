@@ -29,6 +29,8 @@ export let GameData: gameData = {
     {name: "player-jump", path: "assets/images/player/player-jump.png", width: 17, height: 34, frames: 1},
     {name: "player-landing", path: "assets/images/player/player-landing.png", width: 20, height: 35, frames: 1},
     {name: "player-run", path: "assets/images/player/player-run.png", width: 21, height: 33, frames: 8},
+    {name: "player-ledge", path: "assets/images/player/player-ledge-grab.png", width: 20, height: 40, frames: 6},
+
     {name: "lever", path: "assets/images/image.png", width: 48, height:60, frames: 6},
     {name: "gems", path: "assets/images/gems.png", width: 28, height:28, frames: 14 },
 
