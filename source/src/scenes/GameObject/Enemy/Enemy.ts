@@ -5,7 +5,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite implements IEnemy{
     private config:genericConfig;
     private _animations:animationConfig[] = [
         {sprite:"enemy", key:"idle-enemy", frames:[0,1,2,3,4,5,6,7], frameRate:13, yoyo:false, repeat:-1},
-        {sprite:"enemy", key:"walk-enemy", frames:[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41, 42], frameRate:10, yoyo:false, repeat:-1}
+        {sprite:"enemy", key:"walk-enemy", frames:[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41, 42], frameRate:10, yoyo:false, repeat:-1},
+        {sprite:"enemy", key:"init", frames:[50,49,48,47,45,44,43], frameRate:13, yoyo:false, repeat:0}
     ]
     private _body:Phaser.Physics.Arcade.Body;
     private _scene:GamePlay;
@@ -65,6 +66,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite implements IEnemy{
     setDialog(value:boolean):void{
         this.dialog = value;
     }
+
 }
 
 interface animationConfig{

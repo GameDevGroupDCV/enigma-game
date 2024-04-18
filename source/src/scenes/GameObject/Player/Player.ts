@@ -1,3 +1,4 @@
+import { playerData } from "../../../GameData";
 import GamePlay from "../../GamePlay";
 import IPlayer from "./IPlayer";
 
@@ -14,7 +15,6 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     private _body: Phaser.Physics.Arcade.Body;
     private _scene:GamePlay;
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-    private life:number = 1;
     private audio:Phaser.Sound.WebAudioSound;
     private grab:boolean = false;
     
@@ -41,7 +41,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     run():void{
         this.anims.play('run',true);
         if(!this.audio.isPlaying){
-            this.audio.play('Camminata_Del_Player_2');
+            this.audio.play('Camminata_Del_Player',{loop:false,volume:2});
         }
     }
 
@@ -63,8 +63,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
             }
             if (this._cursors.up.isDown && this._body.onFloor() && !this.grab) {
                 this.anims.play('jump', true);
-                this._scene.sound.playAudioSprite("sfx","Salto",{loop:false,volume: 5});
-                this._body.setVelocityY(-520);
+                this._scene.sound.playAudioSprite("sfx","Salto",{loop:false,volume: 1});
+                this._body.setVelocityY(playerData.jump);
             }
             if(this._body.velocity.y > 0 && !this.grab){
                 this.anims.play('landing', true);
@@ -96,8 +96,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     }
 
     decreaseLife():boolean{
-        this.life--;
-        if(this.life == 0){
+        playerData.life--;
+        if(playerData.life == 0){
             return true;
         }
         else{

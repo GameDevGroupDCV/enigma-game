@@ -1,4 +1,6 @@
 import { GameData } from "../GameData";
+import { playerData } from "../GameData";
+import Flashback from "./FlashBack";
 import Player from "./GameObject/Player/Player";
 
 export default class GamePlay extends Phaser.Scene {
@@ -10,7 +12,9 @@ export default class GamePlay extends Phaser.Scene {
   private tileset:Phaser.Tilemaps.Tileset;
   private player:Player;
   private enigmaCompleted:boolean = false;
-      private audio:Phaser.Sound.WebAudioSound;
+  private audio:Phaser.Sound.WebAudioSound;
+  private FlashBackScene:Flashback;
+	private _music: Phaser.Sound.BaseSound;
 
 
   constructor() {
@@ -21,14 +25,15 @@ export default class GamePlay extends Phaser.Scene {
 
 
   create() {
-    this.player = new Player({scene:this, x:200, y:350, key:'player-idle', life:1}).setScale(1.5);
-
+    this.player = new Player({scene:this, x:200, y:350, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.5);
+    this.FlashBackScene = <Flashback>this.scene.get('FlashBack');
+    this._music = this.sound.add("music", { loop: true, volume: 0.1 });
+    this._music.play();
     this.createMap();
     this.cameras.main.startFollow(this.player);
 
     this.physics.add.collider(this.player, this.collisionLayer, this.onCollision, null, this);
     this.physics.add.overlap(this.player, this.overlapLayer, this.onOverlap, null, this);
-
     
   }
 
@@ -37,7 +42,9 @@ export default class GamePlay extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.player.updatePlayer(time, delta);
     this.updateMap();
-
+    if(!this._music.isPlaying){
+      this._music.play();
+    }
     if(this.registry.get('zainoUnblocked')){
       this.events.emit('inventoryBag');
       console.log("zainoUnblocked è false")
@@ -71,12 +78,36 @@ export default class GamePlay extends Phaser.Scene {
   }
 
   onOverlap(player:any, tile:any){
-    if(tile.properties.text == true){
-      this.events.emit("onText");
-      console.log("dialogo");
-      tile.properties.text = false;
-      console.log("dialog");
+    if(tile.properties.introDialog == true){
+      this.events.emit("onText", ["intro"]);
+      console.log("dialogo di intro");
+      this.overlapLayer.forEachTile((tile:Phaser.Tilemaps.Tile) =>{
+        if(tile.properties.introDialog == true){
+          tile.properties.introDialog = false;
+        }
+      })
     }
+
+    if(tile.properties.bagDialog == true){
+      this.events.emit("onText", ["bag"]);
+      console.log("dialogo di bag");
+      this.overlapLayer.forEachTile((tile:Phaser.Tilemaps.Tile) =>{
+        if(tile.properties.bagDialog == true){
+          tile.properties.bagDialog = false;
+        }
+      })
+    }
+
+    if(tile.properties.bossDialog == true){
+      this.events.emit("onText", ["boss"]);
+      console.log("dialogo di boss");
+      this.overlapLayer.forEachTile((tile:Phaser.Tilemaps.Tile) =>{
+        if(tile.properties.bossDialog == true){
+          tile.properties.bossDialog = false;
+        }
+      })
+    }
+
     if(tile.properties.death == true){
       console.log("death");
       if(this.enigmaCompleted){
@@ -86,12 +117,13 @@ export default class GamePlay extends Phaser.Scene {
         if(this.player.decreaseLife()){
           this.scene.stop();
           this.scene.start('GameOver');
-          this.audio.play('');
+          this.audio.play('Rottura_Delle_Ossa');
         }
       }
     }
+
     if(tile.properties.enigma == true){
-      console.log("enigma")
+      console.log("enigma");
       this.player.setPosition(125, 442);
       tile.properties.enigma = false;
       this.enigmaCompleted = true;
@@ -107,6 +139,7 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.bringToTop('Sign');
       this.scene.pause();
     }
+
     if(tile.properties.interaction2 == true){
       tile.properties.interaction2 = false;
       this.registry.set("sign", 2);
@@ -114,6 +147,7 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.bringToTop('Sign');
       this.scene.pause();
     }
+
     if(tile.properties.interaction3 == true){
       tile.properties.interaction3 = false;
       this.registry.set("sign", 3);
@@ -129,6 +163,7 @@ export default class GamePlay extends Phaser.Scene {
       this.events.emit('textZaino');
       this.scene.pause();
     }
+
   }
 
   onCollision(player: any, tile:any):void{
@@ -138,7 +173,7 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.launch('bossRoom');
       this.scene.pause();
       this.scene.bringToTop('bossRoom');
-      
+      this._music.stop();
     }
   }
 
@@ -150,8 +185,6 @@ export default class GamePlay extends Phaser.Scene {
     this.player.setDialog(false);
   }
 
-
-  
   updateMap():void{
     const origin:Phaser.Tilemaps.Tile = this.map.getTileAt(this.player.x, this.player.y, false, this.layerWorld);
     //console.log(origin);

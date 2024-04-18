@@ -65,10 +65,13 @@ export let GameData: gameData = {
     {name: "diario", path:"assets/images/diario.png"},
     {name: "ring", path:"assets/images/gold_ring.png"},
     {name:"bg-flash", path:"assets/images/bg/flashback-bg.png"},
+    {name:"collana", path:"assets/images/collana.png"},
+
 
   ],
   atlas: [],
   sounds: [
+    {name: "music",paths: ["assets/music/simi.ogg", "assets/music/simi.m4a"],},
 
   ],
 
@@ -112,3 +115,8 @@ export let GameData: gameData = {
   
   ]
 };
+
+export let playerData:playerData = {
+  life:1,
+  jump:-520,
+}

@@ -1,4 +1,5 @@
 import { GameData } from "../GameData";
+import { playerData } from "../GameData";
 import Boss from "./GameObject/Boss/Boss";
 import Player from "./GameObject/Player/Player";
 import Stalattite from "./stalattite/Stalattite";
@@ -21,6 +22,7 @@ export default class bossRoom extends Phaser.Scene{
     private attackBoolean:boolean = true;
     private bossDefeated:boolean = false;
     private bg:Phaser.GameObjects.TileSprite;
+    private collana :Phaser.GameObjects.Image;
     
     create(){
         this.bg = this.add.tileSprite(0,180,2272, GameData.globals.gameHeight, 'bg1').setDepth(1).setOrigin(0,0);
@@ -30,14 +32,13 @@ export default class bossRoom extends Phaser.Scene{
         this.createMap();
         this.setupObject();
         this.golem = new Boss({scene: this, x: 1120, y:730, key:'golem'}).setDepth(11);
-        this.player = new Player({scene:this, x:100, y:730, key:'player-idle', life:3}).setScale(1.8).setDepth(11);
-
+        this.player = new Player({scene:this, x:100, y:730, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.8).setDepth(11);
+        this.collana = this.add.image(0,0,"collana").setDepth(11).setAlpha(0).setInteractive().on(
+            "pointerdown",()=>{
+                console.log("prendi collana");
+            }
+        );
         this.cameras.main.startFollow(this.player, false, 1, 0,0,180);
-
-        
-
-
-
 
         this.physics.add.collider(this.golem, this.collisionLayer);
         this.physics.add.collider(this.player, this.collisionLayer, this.onCollisionLayer, null, this);
@@ -107,8 +108,6 @@ export default class bossRoom extends Phaser.Scene{
                 this.golem.walking = true;
                 this.attackBoolean = true;
             }
-        }else{
-            console.log("non sono entrato");
         }
     }
 
@@ -136,7 +135,10 @@ export default class bossRoom extends Phaser.Scene{
         if(this.golem.decreaseLife()){
             this.bossDefeated = true;
             this.golem.anims.play('golem-die', true);
+            this.collana.x = this.golem.x;
+            this.collana.y = this.golem.y+20;
             this.golem.on('animationcomplete', () =>{this.golem.destroy(true)})
+            this.collana.setAlpha(1);
             //this.golem.destroy(true);
             console.log("golem distrutto")
         }

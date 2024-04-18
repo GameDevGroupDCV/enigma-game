@@ -48,16 +48,16 @@ export default class Boss extends Phaser.GameObjects.Sprite implements IBoss{
     }
 
     add_audio_death():void{
-        this.audio_explosion.play('Esplosione_del_boss');
+        this.audio_explosion.play('Esplosione_del_boss',{loop:false,volume:0.5});
     }
 
     add_audio_hit():void{
-        this.audio_hit.play('Colpo_del_Boss');
+        this.audio_hit.play('Colpo_del_Boss',{loop:false,volume:0.5});
     }
 
     run():void{
-        if(!this.audio_run.isPlaying && !this.decreaseLife()){
-            this.audio_run.play('Camminata_Del_Golem');
+        if(!this.audio_run.isPlaying && this.life!=0){
+            this.audio_run.play('Camminata_Del_Golem',{loop:false,volume:0.3});
         }
         this.anims.play('golem-walk', true);
     }

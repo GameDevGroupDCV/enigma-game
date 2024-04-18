@@ -12,6 +12,7 @@ export default class Intro extends Phaser.Scene{
     protected _logo:Phaser.GameObjects.Image;
     protected _bg: Phaser.GameObjects.TileSprite;
     private audio:Phaser.Sound.WebAudioSound;
+    private _music: Phaser.Sound.BaseSound;
 
     constructor(){
         super({key:"Intro"});
@@ -23,6 +24,8 @@ export default class Intro extends Phaser.Scene{
         this._button_play = this.add.image((this.game.canvas.width / 2)-100,(this.game.canvas.height / 2)+150,"play_unpressed").setScale(.07);
         this._button_info = this.add.image((this.game.canvas.width / 2)+100,(this.game.canvas.height / 2)+150,"info_unpressed").setScale(.07);
         this.audio = this.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
+        this._music = this.sound.add("music", { loop: true, volume: 0.7 });
+        this._music.play();
         this.graphics();
         this.bottoni();
     }
@@ -41,6 +44,7 @@ export default class Intro extends Phaser.Scene{
                 this.scene.stop("Intro")
                 this.scene.start("GamePlay");
                 this.audio.play('Click');
+                this._music.stop();
             }
         ).setInteractive();
 

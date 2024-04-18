@@ -19,14 +19,14 @@ export default class Sign extends Phaser.Scene {
       this.scene.stop();
       this.scene.resume('GamePlay');
     })
-    this.text = this.add.text(GameData.globals.gameWidth/2,GameData.globals.gameHeight/2,"", {fontFamily:"alagard"}).setFontSize(60).setColor('black').setOrigin(0.5,0.5);
+    this.text = this.add.text(GameData.globals.gameWidth/2,GameData.globals.gameHeight/2,"", {fontFamily:"alagard"}).setFontSize(56).setColor('black').setOrigin(0.5,0.5);
 
     if(this.registry.get('sign') == 1){
-      this.text.setText("Con un tocco giusto, rivelo la chiarezza.\nAttiva il mio ingranaggio con abilità,\ne la luce nascosta sarà la tua certezza.");
+      this.text.setText("Nel silenzio oscuro, un segreto attende, \na sinistra del sentiero, dove l'ombra si estende. \nRisolvi il mistero, e la luce sorgera', \nla caverna risplendera' e la via si aprira'.");
     }
 
     if(this.registry.get('sign') == 3){
-      this.text.setText("Nella grotta oscura, il golem s'aggira,\ncon l'astuzia come spada, la vittoria \nsi mira tra rocce appuntite e buio profondo, \nl'ingegno è l'arma che tiene il mondo");
+      this.text.setText("Nella grotta oscura, il golem s'aggira,\ncon l'astuzia come spada, la vittoria \nsi mira tra rocce appuntite e buio profondo, \nl'ingegno e' l'arma che tiene il mondo");
     }
 
   }

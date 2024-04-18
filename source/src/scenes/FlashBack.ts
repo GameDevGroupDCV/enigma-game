@@ -1,3 +1,4 @@
+import { playerData } from "../GameData";
 import Enemy from "./GameObject/Enemy/Enemy";
 import Player from "./GameObject/Player/Player";
 
@@ -29,7 +30,7 @@ export default class Flashback extends Phaser.Scene{
         this.createMap();
     
         
-        this.player = new Player({scene:this, x:2688, y:224, key:'player', life:3});
+        this.player = new Player({scene:this, x:2688, y:224, key:'player', life:playerData.life, jump:playerData.jump});
         
         
         this.cameras.main.startFollow(this.player, false, 1, 1, 0, 50)
@@ -71,7 +72,6 @@ export default class Flashback extends Phaser.Scene{
         this.layerWorld = this.map.createLayer("world", this.tileset, 0,0).setDepth(9).setAlpha(1);
         
         this.backgroundLayer = this.map.createLayer("background", this.tileset, 0,0).setDepth(0);
-
         this.overlapLayer = this.map.createLayer("overlap", this.tileset, 0,0).setDepth(2).setAlpha(0);
 
         this.overlapLayer.setCollisionByProperty({collide:true});
@@ -100,6 +100,7 @@ export default class Flashback extends Phaser.Scene{
 
         if(tile.properties.death == true){
             if(this.completeScene){
+                this.events.emit("flashbackEvent", ['afterFlashBack'])
                 this.scene.stop();
                 this.scene.resume('GamePlay');
             }
@@ -112,13 +113,16 @@ export default class Flashback extends Phaser.Scene{
         if(tile.properties.enemy==true){
             console.log("overlap");
             for(let i = 0; i<3; i++){
-                this.enemyGroup.add(new Enemy({scene:this, x:2600+(32*i), y:224, key:'enemy'}))
+                var enemy:Enemy = new Enemy({scene:this, x:2600+(32*i), y:224, key:'enemy'});
+                this.enemyGroup.add(enemy);
+                enemy.anims.play('init');
             }
             this.physics.add.collider(this.enemyGroup, this.collisionLayer);
             this.physics.add.collider(this.enemyGroup, this.enemyGroup);
             this.physics.add.collider(this.player, this.enemyGroup);
             this.generateEnemy = true;
             tile.properties.enemy = false;
+            this.events.emit('flashbackEvent', ['escape'])
         }
     }
 }

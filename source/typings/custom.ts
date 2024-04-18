@@ -41,6 +41,7 @@ interface genericConfig {
 }
 interface playerConfig extends genericConfig{
   life:number;
+  jump:number;
 }
 
 interface ImageAsset {
@@ -98,6 +99,11 @@ interface AtlasAsset {
   key: string;
   imagepath: string;
   jsonpath: string;
+}
+
+interface playerData{
+  life:number; 
+  jump:number;
 }
 
 
