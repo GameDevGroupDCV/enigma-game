@@ -75,8 +75,6 @@ export default class Preloader extends Phaser.Scene {
             //richiamiamo il metodo start della far partire la scena Intro
             //this.scene.start("Intro");
             this.scene.start("Intro");
-            this.scene.start("Dialog");
-            this.scene.bringToTop("Dialog");
 
           },
         });

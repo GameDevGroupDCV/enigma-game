@@ -1,0 +1,80 @@
+{
+    "resources": ["/Sounds/AudioGioco.mp4", "/Sounds/AudioGioco.ogg"],
+    "spritemap": {
+    "Audio_per_Far_cagare_il_Player_2": {
+        "start": 0.000,
+        "end": 3.750,
+        "loop": false
+    },
+    "Audio_Per_Far_cagare_il_Player_3": {
+        "start": 3.750,
+        "end": 6.150,
+        "loop": false
+    },
+    "Camminata": {
+        "start": 6.150,
+        "end": 7.301,
+        "loop": true
+    },
+    "Colpo_caricato_del_Boss": {
+        "start": 7.301,
+        "end": 10.776,
+        "loop": false
+    },
+    "Colpo_del_Boss": {
+        "start": 10.776,
+        "end": 13.061,
+        "loop": false
+    },
+    "Esplosione_del_boss": {
+        "start": 13.061,
+        "end": 13.901,
+        "loop": false
+    },
+    "Torce": {
+        "start": 13.901,
+        "end": 14.634,
+        "loop": false
+    },
+    "Salto": {
+        "start": 14.634,
+        "end": 15.036,
+        "loop": false
+    },
+    "Caduta_Ametista": { 
+        "start": 15.036,
+        "end": 15.965,
+        "loop": false
+    },
+    "Attivazione_Della_Leva": {
+        "start": 16.799,
+        "end": 17.834,
+        "loop": false
+    },
+    "Rottura_Delle_Ossa": {
+        "start": 19.224,
+        "end": 21.223,
+        "loop": false
+    },
+    "Click": {
+        "start": 21.224 ,
+        "end": 23.547,
+        "loop": false
+    },
+    "Camminata_Del_Golem": {
+        "start": 23.548,
+        "end": 29.283,
+        "loop": true
+    },
+    "Caduta": {
+        "start": 29.284,
+        "end": 29.689,
+        "loop": true
+    },
+    "Camminata_Del_Player": {
+        "start": 29.690,
+        "end": 30.036,
+        "loop": false
+    }
+}
+}

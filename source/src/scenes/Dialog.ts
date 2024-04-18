@@ -4,15 +4,18 @@ import GamePlay from "./GamePlay";
 import Player from "./GameObject/Player/Player";
 import LockZaino from "./lockZaino";
 import Flashback from "./FlashBack";
+import bossRoom from "./bossRoom";
+import Boss from "./GameObject/Boss/Boss";
 export default class Dialogs extends Phaser.Scene {
   private text: Phaser.GameObjects.Text;
   private text_continue: Phaser.GameObjects.Text;
   private GamePlay:GamePlay;
   private FlashBack:Flashback;
+  private BossRoom:bossRoom;
 
   private messages:dialogMessages = {
     gameplay:{
-      intro:["*Urgh...* che botta","D-dove mi trovo?", "Devo trovare un modo per uscire da qui!"],
+      intro:["*Urgh...* che botta alla testa.","D-dove mi trovo? \n Come ci sono finito qui?", "Devo trovare un modo per tornare in superficie!"],
       bag:["Che ci fa qui' uno zaino?","Meglio vedere cosa c'e' dentro, potrebbe contenere qualcosa di utile!"],
       boss:["Che porta strana...", "Ma e' l'unica zona che non ho ancora esplorato", "Chissa' cosa voleva dire quella scritta sul cartello..."],
       
@@ -21,12 +24,18 @@ export default class Dialogs extends Phaser.Scene {
       bag:["Sembra esserci una password...", "Devo trovare la soluzione all'enigma", "Adesso ricordo tutto....."]
     },
     FlashBackScene:{
-      afterFlashBack:["Mi stavano seguendo quegli esseri bizzarri apparsi dal nulla\ndopo aver preso l'anello dal tempio", "Mentre cercavo di fuggire, sono caduto in questa caverna..."],
+      afterFlashBack:["Mi stavano seguendo quegli esseri bizzarri apparsi dal nulla...", "Si! Dopo aver preso l'anello dal tempio!", "E mentre cercavo di fuggire, sono caduto in questa caverna..."],      
       escape:["Devo trovare un modo per seminarli!"]
+    }, 
+    BossScene:{
+      collana:["Da dove sbuca questa collana?", "La gemma incastonata sembra abbia dei poteri, \nproprio come quella dell'anello."]
     }
 
 
   }
+  private life_image:Phaser.GameObjects.Image;
+  private shield_image1 :Phaser.GameObjects.Image;
+  private shield_image2 :Phaser.GameObjects.Image;
 
   private bg_image:Phaser.GameObjects.Image;
   private inventory_image:Phaser.GameObjects.Image;
@@ -44,11 +53,11 @@ export default class Dialogs extends Phaser.Scene {
   }
 
   create() {
-    this.scene.bringToTop('Dialog');
     this.graphics();
     console.log("scena di dialog");
     this.GamePlay = <GamePlay>this.scene.get('GamePlay');
     this.FlashBack = <Flashback>this.scene.get('FlashBack');
+    this.BossRoom = <bossRoom>this.scene.get('bossRoom');
 
     this.bg_image = this.add.image(0,this.game.canvas.height - 150,"layer").setVisible(false).setOrigin(0,0).setInteractive();;
     this.inventory_image = this.add.image(390, 240, 'inventory').setVisible(false).setOrigin(0,0);
@@ -69,8 +78,19 @@ export default class Dialogs extends Phaser.Scene {
 
     this.FlashBack.events.off('flashbackEvent', this.FlashBackScene, this);
     this.FlashBack.events.on('flashbackEvent', this.FlashBackScene, this);
-    
 
+    this.BossRoom.events.off('collanaEvent', this.collanaDialog, this);
+    this.BossRoom.events.on('collanaEvent', this.collanaDialog, this);
+    
+    this.life_image = this.add.image(1200, 30, 'life').setScale(2.5);
+    for(let i:number=0; i<3; i++){
+    this.shield_image1 = this.add.image(1225 ,30, 'shield').setScale(2.5).setVisible(false);
+    this.shield_image2 = this.add.image(1250,30, 'shield').setScale(2.5).setVisible(false);
+  }
+    if(playerData.life == 3){
+      this.shield_image1.setVisible(true);
+      this.shield_image2.setVisible(true);
+    }
   }
 
   update(time:number,delta:number) {
@@ -153,6 +173,10 @@ export default class Dialogs extends Phaser.Scene {
           delay:2500,
           callback: ()=>{
             this.text.setText(this.messages.gameplay.boss[1]);
+            this.time.addEvent({
+              delay:2500,
+              callback: ()=>{
+                this.text.setText(this.messages.gameplay.boss[2]);
             this.text_continue.setVisible(true);
             this.bg_image.on('pointerdown', () =>{
               this.GamePlay.playerUnBLock();
@@ -163,6 +187,8 @@ export default class Dialogs extends Phaser.Scene {
           }
         })
       }
+    })
+    }
   }
 
   textZaino():void{
@@ -194,17 +220,23 @@ export default class Dialogs extends Phaser.Scene {
       this.text.setAlpha(1);
       this.text.setText(this.messages.FlashBackScene.afterFlashBack[0]);
       this.time.addEvent({
-        delay:2500,
-        callback: ()=>{
-          this.text.setText(this.messages.FlashBackScene.afterFlashBack[1]);
+      delay:2500,
+      callback: ()=>{
+      this.text.setText(this.messages.FlashBackScene.afterFlashBack[1]);
+      this.time.addEvent({
+      delay:2500,
+      callback: ()=>{
+        this.text.setText(this.messages.FlashBackScene.afterFlashBack[2]);
           this.text_continue.setVisible(true);
           this.bg_image.on('pointerdown', () =>{
             this.GamePlay.playerUnBLock();
             this.text.setAlpha(0);
             this.bg_image.setVisible(false);
             this.text_continue.setVisible(false);
-          }) 
-        }
+          })
+      }
+      })
+      }
       })
     }
     
@@ -217,12 +249,12 @@ export default class Dialogs extends Phaser.Scene {
       this.text.setText(this.messages.FlashBackScene.escape[0]);
       console.log("cambio il testo");
       this.time.addEvent({
-        delay:2500,
+        delay:1500,
         callback: ()=>{
           this.text.setText("");
           this.text.setAlpha(0);
           this.bg_image.setVisible(false);
-          this.text_continue.setVisible(true);
+          this.text_continue.setVisible(false);
         },
         callbackScope:this
       })
@@ -237,6 +269,7 @@ export default class Dialogs extends Phaser.Scene {
     this.ring = this.add.image(700, 300, 'ring').setOrigin(0,0).setScale(2).setInteractive();
 
     this.diario.on('pointerdown', () =>{
+      if(playerData.life == 3){
       this.diario.destroy();
       this.GamePlay.playerBlock();
       this.bg_image.setVisible(true);
@@ -258,13 +291,33 @@ export default class Dialogs extends Phaser.Scene {
           this.scene.pause('GamePlay');
           this.scene.start('FlashBack');
           this.scene.restart();
-        },
+      },
         callbackScope:this,
       })
+      }
     })
     this.ring.on('pointerdown', () =>{ 
       playerData.life = 3;
       this.ring.destroy();
+    })
+  }
+
+  collanaDialog():void{
+    this.bg_image.off('pointerdown', null, this);
+    this.bg_image.setVisible(true);
+    this.text.setText(this.messages.BossScene.collana[0]);
+    this.text.setAlpha(1);
+    this.time.addEvent({
+      delay:2500,
+      callback: ()=>{
+        this.text.setText(this.messages.BossScene.collana[1]);
+        this.text_continue.setVisible(true);
+        this.bg_image.on('pointerdown', () =>{
+          this.text.setAlpha(0);
+          this.bg_image.setVisible(false);
+          this.text_continue.setVisible(false);
+        })
+      }
     })
   }
 }
@@ -284,6 +337,9 @@ interface dialogMessages{
   FlashBackScene?:{
     afterFlashBack:string[];
     escape:string[];
+  }
+  BossScene?:{
+    collana:string[];
   }
   
 }

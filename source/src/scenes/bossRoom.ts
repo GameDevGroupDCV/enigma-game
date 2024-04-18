@@ -22,8 +22,8 @@ export default class bossRoom extends Phaser.Scene{
     private attackBoolean:boolean = true;
     private bossDefeated:boolean = false;
     private bg:Phaser.GameObjects.TileSprite;
-    private collana :Phaser.GameObjects.Image;
-    
+    private collana :Phaser.GameObjects.Sprite;
+    private bodyCollana:Phaser.Physics.Arcade.Body;
     create(){
         this.bg = this.add.tileSprite(0,180,2272, GameData.globals.gameHeight, 'bg1').setDepth(1).setOrigin(0,0);
         
@@ -33,17 +33,23 @@ export default class bossRoom extends Phaser.Scene{
         this.setupObject();
         this.golem = new Boss({scene: this, x: 1120, y:730, key:'golem'}).setDepth(11);
         this.player = new Player({scene:this, x:100, y:730, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.8).setDepth(11);
-        this.collana = this.add.image(0,0,"collana").setDepth(11).setAlpha(0).setInteractive().on(
+        this.collana = this.add.sprite(0,0,"collana").setDepth(11).setAlpha(0).setInteractive().on(
             "pointerdown",()=>{
                 console.log("prendi collana");
             }
         );
+        this.physics.world.enableBody(this.collana);
+        this.bodyCollana = this.collana.body as Phaser.Physics.Arcade.Body;
+        this.bodyCollana.setAllowGravity(false);
+        this.bodyCollana.setImmovable(true);
+
         this.cameras.main.startFollow(this.player, false, 1, 0,0,180);
 
         this.physics.add.collider(this.golem, this.collisionLayer);
         this.physics.add.collider(this.player, this.collisionLayer, this.onCollisionLayer, null, this);
         this.physics.add.collider(this.player, this.golem, this.onCollisionGolem, null, this);
         this.physics.add.collider(this.golem, this.stalattiti, this.onCollisionStalattiti, null, this);
+        this.physics.add.collider(this.player, this.collana, this.onCollisionCollana, null, this);
         
     }
 
@@ -112,10 +118,11 @@ export default class bossRoom extends Phaser.Scene{
     }
 
     onCollisionGolem():void{
+        
         if(this.player.decreaseLife()){
             this.golem.stop_run_audio();
             this.scene.stop();
-            this.scene.start('GameOver')
+            this.scene.start('GameOver');
         }
     }
 
@@ -136,7 +143,8 @@ export default class bossRoom extends Phaser.Scene{
             this.bossDefeated = true;
             this.golem.anims.play('golem-die', true);
             this.collana.x = this.golem.x;
-            this.collana.y = this.golem.y+20;
+            this.collana.y = this.golem.y+90;
+            
             this.golem.on('animationcomplete', () =>{this.golem.destroy(true)})
             this.collana.setAlpha(1);
             //this.golem.destroy(true);
@@ -149,5 +157,11 @@ export default class bossRoom extends Phaser.Scene{
             this.scene.stop();
             this.scene.resume('GamePlay');
         }
+    }
+
+    onCollisionCollana(player:any, collana:any){
+        this.player.setJump(-720);
+        this.collana.destroy(true);
+        this.events.emit("collanaEvent")
     }
 }

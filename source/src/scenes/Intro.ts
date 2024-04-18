@@ -38,22 +38,27 @@ export default class Intro extends Phaser.Scene{
         ).on(
             "pointerout",()=>{
                 this._button_play = this.add.image((this.game.canvas.width / 2)-100,(this.game.canvas.height / 2)+150,"play_unpressed").setScale(.07);
+                console.log
             }
         ).on(
             "pointerdown",()=>{
                 this.scene.stop("Intro")
                 this.scene.start("GamePlay");
                 this.audio.play('Click');
+                this.scene.start("Dialog");
+                this.scene.bringToTop("Dialog");
                 this._music.stop();
             }
         ).setInteractive();
 
         this._button_info.on(
             "pointerover",()=>{
+                this._button_info.destroy(true);
                 this._button_info = this.add.image((this.game.canvas.width / 2)+100,(this.game.canvas.height / 2)+150,"info_pressed").setScale(.07);
             }
         ).on(
             "pointerout",()=>{
+                this._button_info.destroy(true);
                 this._button_info = this.add.image((this.game.canvas.width / 2)+100,(this.game.canvas.height / 2)+150,"info_unpressed").setScale(.07);
             }
         )

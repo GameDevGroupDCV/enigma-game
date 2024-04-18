@@ -66,6 +66,8 @@ export let GameData: gameData = {
     {name: "ring", path:"assets/images/gold_ring.png"},
     {name:"bg-flash", path:"assets/images/bg/flashback-bg.png"},
     {name:"collana", path:"assets/images/collana.png"},
+    {name:"shield", path:"assets/images/shield.png"},
+    {name:"life", path:"assets/images/life.png"},
 
 
   ],

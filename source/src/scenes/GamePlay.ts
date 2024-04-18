@@ -1,3 +1,4 @@
+import { Tilemaps } from "phaser";
 import { GameData } from "../GameData";
 import { playerData } from "../GameData";
 import Flashback from "./FlashBack";
@@ -15,6 +16,8 @@ export default class GamePlay extends Phaser.Scene {
   private audio:Phaser.Sound.WebAudioSound;
   private FlashBackScene:Flashback;
 	private _music: Phaser.Sound.BaseSound;
+  private _dotExclamation: Phaser.GameObjects.Text;
+  private _space: Phaser.Input.Keyboard.Key;
 
 
   constructor() {
@@ -30,14 +33,30 @@ export default class GamePlay extends Phaser.Scene {
     this._music = this.sound.add("music", { loop: true, volume: 0.1 });
     this._music.play();
     this.createMap();
+    this._dotExclamation = this.add.text(0,0,"!",{font:"alagard"}).setAlpha(0).setFontSize(40);
+    this._space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.cameras.main.setViewport(140,195,900,250);
     this.cameras.main.startFollow(this.player);
+    this.cameras.main.setAlpha(0.5);
+    this.cameras.main.setZoom(1.58);
 
     this.physics.add.collider(this.player, this.collisionLayer, this.onCollision, null, this);
     this.physics.add.overlap(this.player, this.overlapLayer, this.onOverlap, null, this);
     
   }
 
-
+  getSign(cartel:number):void{
+    console.log("ok");
+    this.registry.set("sign", cartel);
+    this.scene.launch('Sign');
+    this.scene.bringToTop('Sign');
+    this.scene.pause();
+  }
+  
+  position_bg_exterior():void{
+    this._dotExclamation.x= this.player.x-10;
+    this._dotExclamation.y= this.player.y-64;
+  }
 
   update(time: number, delta: number): void {
     this.player.updatePlayer(time, delta);
@@ -50,6 +69,19 @@ export default class GamePlay extends Phaser.Scene {
       console.log("zainoUnblocked è false")
       this.registry.set('zainoUnblocked', false);
     }
+
+    if(this.enigmaCompleted){
+      this.updateMap();
+        this.cameras.main.setViewport(0, 0, GameData.globals.gameWidth,GameData.globals.gameHeight);
+        this.cameras.main.setAlpha(1);
+        this.cameras.main.setZoom(1);
+      }
+
+      this.position_bg_exterior();
+
+      if(playerData.jump = -720){
+        this.player.setJump(-720);
+      }
   }
 
   createMap():void{
@@ -133,27 +165,30 @@ export default class GamePlay extends Phaser.Scene {
     }
 
     if(tile.properties.interaction1 == true){
-      tile.properties.interaction1 = false;
-      this.registry.set("sign", 1);
-      this.scene.launch('Sign');
-      this.scene.bringToTop('Sign');
-      this.scene.pause();
+      this._dotExclamation.setAlpha(1).setDepth(13);
+      if (this._space.isDown) { 
+        console.log("ciao");
+        this.getSign(1);
+      }
+    }
+    if(!tile.properties.interaction1 && !tile.properties.interaction2 && !tile.properties.interaction3){
+      this._dotExclamation.setAlpha(0).setDepth(13);
     }
 
     if(tile.properties.interaction2 == true){
-      tile.properties.interaction2 = false;
-      this.registry.set("sign", 2);
-      this.scene.launch('Sign');
-      this.scene.bringToTop('Sign');
-      this.scene.pause();
+      this._dotExclamation.setAlpha(1).setDepth(13);
+      if (this._space.isDown) { 
+        console.log("ciao");
+        this.getSign(2);
+      }
     }
 
     if(tile.properties.interaction3 == true){
-      tile.properties.interaction3 = false;
-      this.registry.set("sign", 3);
-      this.scene.launch('Sign');
-      this.scene.bringToTop('Sign');
-      this.scene.pause();
+      this._dotExclamation.setAlpha(1).setDepth(13);
+      if (this._space.isDown) { 
+        console.log("ciao");
+        this.getSign(3);
+      }
     }
     if(tile.properties.bag == true){
       tile.properties.bag = false;
@@ -173,8 +208,13 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.launch('bossRoom');
       this.scene.pause();
       this.scene.bringToTop('bossRoom');
+      this.scene.bringToTop('Dialog');
       this._music.stop();
     }
+    this.map.forEachTile((tileMap:Phaser.Tilemaps.Tile) =>{
+      const dist:number = Phaser.Math.Distance.Snake(tile.x, tile.y, tileMap.x, tileMap.y);
+      tileMap.setAlpha(1 - 0.1 * dist);
+    })
   }
 
 
@@ -183,6 +223,9 @@ export default class GamePlay extends Phaser.Scene {
   }
   playerUnBLock():void{
     this.player.setDialog(false);
+  }
+  playerSetLife(value:number){
+    this.player.setLife(value);
   }
 
   updateMap():void{

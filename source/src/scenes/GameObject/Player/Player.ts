@@ -17,6 +17,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private audio:Phaser.Sound.WebAudioSound;
     private grab:boolean = false;
+    private jump:number = playerData.jump;
+    private life:number = playerData.life;
     
     constructor(params:playerConfig){
         super(params.scene, params.x, params.y, params.key);
@@ -64,7 +66,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
             if (this._cursors.up.isDown && this._body.onFloor() && !this.grab) {
                 this.anims.play('jump', true);
                 this._scene.sound.playAudioSprite("sfx","Salto",{loop:false,volume: 1});
-                this._body.setVelocityY(playerData.jump);
+                this._body.setVelocityY(this.jump);
             }
             if(this._body.velocity.y > 0 && !this.grab){
                 this.anims.play('landing', true);
@@ -97,7 +99,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
 
     decreaseLife():boolean{
         playerData.life--;
-        if(playerData.life == 0){
+        this.life--;
+        if(this.life == 0){
             return true;
         }
         else{
@@ -118,6 +121,14 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
 
     setGrab(value:boolean){
         this.grab = value;
+    }
+    setJump(value:number):void{
+        playerData.jump = value;
+        this.jump = playerData.jump;
+    }
+    setLife(value:number):void{
+        playerData.life = value;
+        this.life = playerData.life;
     }
 } 
 
