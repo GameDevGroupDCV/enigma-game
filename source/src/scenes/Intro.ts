@@ -15,12 +15,14 @@ export default class Intro extends Phaser.Scene{
     protected _bg: Phaser.GameObjects.TileSprite;
     private audio:Phaser.Sound.WebAudioSound;
     private _music: Phaser.Sound.BaseSound;
+    private info:Phaser.GameObjects.Text;
 
     constructor(){
         super({key:"Intro"});
     }
 
     create(){
+        this.info = this.add.text(40,120, "").setAlpha(0);
         this._bg = this.add.tileSprite(0,0,1280,640,"bg1").setOrigin(0,0);
         this._logo = this.add.image((this.game.canvas.width / 2),220,"logo").setScale(0.3).setAlpha(0.8);
         this._button_play = this.add.sprite((this.game.canvas.width / 2)-100,(this.game.canvas.height / 2)+150,"play_button",0).setScale(.07);
@@ -93,7 +95,10 @@ export default class Intro extends Phaser.Scene{
         this._credict_container = this.add.container(0,0).setDepth(2);
         
         this._modal = this.add.image(30,80,"model").setOrigin(0).setInteractive();
-
+        this.info.setText("Tasti direzionali: per il movimento\n\nSpazio: interagisci con i cartelli\n\nClick del mouse: interagisci")
+        this.info.setAlpha(1);
+        this.info.setFontFamily('alagard')
+        this.info.setFontSize(20)
         this._credict_close = this.add.image(390,120,"credit_close").setOrigin(0.5).on(
             "pointerdown",()=>{
                 this.closeCredit();
@@ -101,7 +106,7 @@ export default class Intro extends Phaser.Scene{
             }
         ).setInteractive();
 
-        this._credict_container.add([this._modal,this._credict_close]);
+        this._credict_container.add([this._modal,this._credict_close, this.info]);
     }
 
     closeCredit():void{

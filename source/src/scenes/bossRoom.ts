@@ -42,7 +42,7 @@ export default class bossRoom extends Phaser.Scene{
         this.bodyCollana.setAllowGravity(false);
         this.bodyCollana.setImmovable(true);
 
-        this.cameras.main.startFollow(this.player, false, 1, 0,0,180);
+        this.cameras.main.startFollow(this.player, false, 1, 0,0,88);
 
         this.physics.add.collider(this.golem, this.collisionLayer);
         this.physics.add.collider(this.player, this.collisionLayer, this.onCollisionLayer, null, this);

@@ -50,7 +50,7 @@ export default class GamePlay extends Phaser.Scene {
     this.Dialog.events.off('stop_music',this.stop_audio,this);
     this.Dialog.events.on('stop_music',this.stop_audio,this);
 
-    this._music = this.sound.add("music_game", { loop: true, volume: 5 });
+    this._music = this.sound.add("music_game", { loop: true, volume: 3 });
 
     if(audio_check.value){
       console.log("ciao musica");

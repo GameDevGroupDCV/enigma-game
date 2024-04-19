@@ -58,7 +58,30 @@ private scrollSpeed:number = 2;
         text.setFontSize(20)
     })
 
-    this._button_win = this.add.sprite((this.game.canvas.width / 2),(this.game.canvas.height / 2)+100,"restart_button",0).setScale(.07);
+    this._button_win = this.add.sprite((this.game.canvas.width / 2),(this.game.canvas.height / 2)+100,"restart_button",0).setScale(.07).setInteractive();
+
+    this._button_win.on(
+      "pointerover",()=>{
+          this._button_win.setFrame(1);
+      }
+  ).on(
+      "pointerout",()=>{
+          this._button_win.setFrame(0);
+      }
+  ).on(
+      "pointerdown",()=>{
+          this.audio.play('Click');
+          this.scene.stop("GamePlay");
+          this.scene.stop("bossRoom");
+          this.scene.stop("lockZaino");
+          this.scene.stop("FlashBack");
+          this.scene.stop("Dialog");
+          this.scene.stop("Enigma");
+          this.scene.stop("Sign");
+          this.scene.stop("GameOver");
+          this.scene.start("Intro");
+      }
+  )
     this._music = this.sound.add("music", { loop: true, volume: 0.7 });
     if(audio_check.value){
       this._music.play();
