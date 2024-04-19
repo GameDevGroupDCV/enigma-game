@@ -17,8 +17,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private audio:Phaser.Sound.WebAudioSound;
     private grab:boolean = false;
-    private jump:number = playerData.jump;
-    private life:number = playerData.life;
+    private jump:number;
+    private life:number;
     
     constructor(params:playerConfig){
         super(params.scene, params.x, params.y, params.key);
@@ -27,7 +27,19 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         
     }
 
+    getlife():number{
+        return this.life;
+    }
+
+    getfloor():boolean{
+        return this._body.onFloor();
+    }
+
     initPlayer(){
+        this.life = this.config.life;
+        this.jump = this.config.jump;
+        console.log("player" + this.life);
+
         this._scene = <GamePlay>this.config.scene;
         this._scene.add.existing(this);
         this._scene.physics.world.enable(this);
@@ -45,6 +57,10 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         if(!this.audio.isPlaying){
             this.audio.play('Camminata_Del_Player',{loop:false,volume:2});
         }
+    }
+
+    getVelocity():number{
+        return this._body.velocity.y;
     }
 
     updatePlayer(time: number, delta: number): void {
@@ -66,6 +82,7 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
             if (this._cursors.up.isDown && this._body.onFloor() && !this.grab) {
                 this.anims.play('jump', true);
                 this._scene.sound.playAudioSprite("sfx","Salto",{loop:false,volume: 1});
+                console.log(this.jump);
                 this._body.setVelocityY(this.jump);
             }
             if(this._body.velocity.y > 0 && !this.grab){
@@ -77,6 +94,11 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
             this._body.setVelocityY(0);
             this.anims.play('idle', true);
         }
+
+        if(playerData.jump != this.jump){
+            this.jump = playerData.jump;
+        }
+
         
 
     }
@@ -99,7 +121,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
 
     decreaseLife():boolean{
         playerData.life--;
-        this.life--;
+        this.setLife();
+        console.log(this.life);
         if(this.life == 0){
             return true;
         }
@@ -122,14 +145,18 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
     setGrab(value:boolean){
         this.grab = value;
     }
+
+    /*
     setJump(value:number):void{
         playerData.jump = value;
         this.jump = playerData.jump;
-    }
-    setLife(value:number):void{
-        playerData.life = value;
+
+    */
+
+    setLife():void{
         this.life = playerData.life;
     }
+    
 } 
 
 interface animationConfig{

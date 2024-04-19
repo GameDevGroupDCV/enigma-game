@@ -106,5 +106,9 @@ interface playerData{
   jump:number;
 }
 
+interface audioData{
+  value:boolean;
+}
+
 
 

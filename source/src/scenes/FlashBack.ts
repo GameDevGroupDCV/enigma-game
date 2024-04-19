@@ -1,4 +1,5 @@
-import { playerData } from "../GameData";
+    import { playerData } from "../GameData";
+import { audio_check } from "../GameData";
 import Enemy from "./GameObject/Enemy/Enemy";
 import Player from "./GameObject/Player/Player";
 
@@ -15,16 +16,20 @@ export default class Flashback extends Phaser.Scene{
     private backgroundLayer:Phaser.Tilemaps.TilemapLayer;
     private image:Phaser.GameObjects.Image;
     private bg:Phaser.GameObjects.TileSprite;
-
+    private _music: Phaser.Sound.BaseSound;
     private enemy:Enemy;
     private player:Player;
     private enemyGroup:Phaser.GameObjects.Group;
     private generateEnemy:boolean = false;
+    private stopEnemy:boolean = false;
 
     private completeScene:boolean = false;
     create(){
         this.enemyGroup = this.add.group();
-
+        this._music = this.sound.add("music_flashback", { loop: true, volume: 0.1 });
+        if(audio_check.value){
+            this._music.play();
+        }
         this.bg = this.add.tileSprite(0,640,3500, 640,"bg-flash").setOrigin(0,1).setDepth(0);
         console.log("scena di flashback");
         this.createMap();
@@ -36,9 +41,10 @@ export default class Flashback extends Phaser.Scene{
         this.cameras.main.startFollow(this.player, false, 1, 1, 0, 50)
 
         this.physics.add.collider(this.player, this.collisionLayer, this.onCollision, null, this);
-
+        this.physics.add.collider(this.player,this.enemyGroup,this.collisionEnemy,null,this);
         this.physics.add.overlap(this.player, this.overlapLayer, this.onOverlap, null, this);
-        
+        this.physics.add.overlap(this.enemyGroup, this.overlapLayer, this.onOverlapEnemy, null, this)
+        this.physics.add.collider(this.enemyGroup, this.collisionLayer, this.onCollisionEnemy, null, this);
     }   
 
     update(time: number, delta: number): void {
@@ -47,7 +53,14 @@ export default class Flashback extends Phaser.Scene{
                 this.time.addEvent({
                     delay:500, 
                     callback: () =>{
-                        this.physics.moveTo(element, this.player.x, 224, 150);
+                        if(!this.stopEnemy){
+                            console.log(this.stopEnemy);
+                            this.physics.moveTo(element, this.player.x, 224, 150);
+                        }
+                        else{
+
+                        }
+                        
                     },
                     callbackScope: this
                 })
@@ -79,6 +92,10 @@ export default class Flashback extends Phaser.Scene{
 
     }
 
+    collisionEnemy():void{
+        this.scene.restart();
+    }
+
     onCollision(player:any, tile:any):void{
         if(tile.properties.interaction == true){
             console.log("interaction true");
@@ -102,7 +119,9 @@ export default class Flashback extends Phaser.Scene{
             if(this.completeScene){
                 this.events.emit("flashbackEvent", ['afterFlashBack'])
                 this.scene.stop();
+                this._music.stop();
                 this.scene.resume('GamePlay');
+                this.events.emit("audio_resume");
             }
             else{
                 this.scene.restart();
@@ -124,5 +143,22 @@ export default class Flashback extends Phaser.Scene{
             tile.properties.enemy = false;
             this.events.emit('flashbackEvent', ['escape'])
         }
+
+        
+
+    }
+
+    onOverlapEnemy(enemy:any, tile:any):void{
+        if(tile.properties.stopEnemy == true){
+            console.log("stop");
+            this.stopEnemy = true;
+        }
+    }
+
+    onCollisionEnemy(enemy:any, tile:any):void{
+        if(tile.properties.death){
+            enemy.destroy();
+        }
+        
     }
 }

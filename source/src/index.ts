@@ -2,7 +2,6 @@
 import "phaser";
 //importiamo le nostre scene
 import Boot from "./scenes/Boot";
-import Hud from "./scenes/Hud";
 import Preloader from "./scenes/Preloader";
 import GamePlay from "./scenes/GamePlay";
 import GameOver from "./scenes/GameOver";
@@ -12,6 +11,7 @@ import bossRoom from "./scenes/bossRoom";
 import Sign from "./scenes/Sign";
 import LockZaino from "./scenes/lockZaino";
 import Dialogs from "./scenes/Dialog";
+import Win from "./scenes/win";
 //importiamo GameData che contiene i valori globali del gioco
 import { GameData } from "./GameData";
 import Flashback from "./scenes/FlashBack";
@@ -38,7 +38,6 @@ window.addEventListener("load", () => {
 
     scene: [
       Boot,
-      Hud,
       Preloader,
       Intro,
       GamePlay,
@@ -47,7 +46,9 @@ window.addEventListener("load", () => {
       bossRoom,
       Sign, 
       LockZaino, 
-      Dialogs, Flashback
+      Dialogs, 
+      Flashback,
+      Win
     ],
     physics: {
       default: "arcade",

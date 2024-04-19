@@ -47,16 +47,17 @@ export let GameData: gameData = {
     {name:"lock", path:"assets/images/lock.png", width:24, height:32, frames:17},
 
     {name:"enemy", path:"assets/images/enemy/monster.png", width:48, height:48, frames:59},
+    {name:"play_button", path:"assets/images/play_pressunpress.png",width:2048,height:1024,frames:2},
+    {name:"restart_button", path:"assets/images/restart_pressunpress.png",width:2048,height:1024,frames:2},
+    {name:"info_button", path:"assets/images/info_pressunpress.png",width:2048,height:1024,frames:2},
+    {name:"music_button", path:"assets/images/audio_pressunpress.png",width:559,height:559,frames:2},
+
   ],
   images: [
     {name: "bgenigma", path: "assets/images/bgenigma.png"},
     {name:"bg-wood", path:"assets/images/bg/wood.png"},
     {name:"bg1", path:"assets/images/bg/bg1.png"},
     {name:"credit_close", path:"assets/images/credit_close.png"},
-    {name:"info_pressed", path:"assets/images/Info_Pressed.png"},
-    {name:"info_unpressed", path:"assets/images/Info_Unpressed.png"},
-    {name:"play_pressed", path:"assets/images/Play_Pressed.png"},
-    {name:"play_unpressed", path:"assets/images/Play_Unpressed.png"},
     {name:"logo", path:"assets/images/logo.jpeg"},
     {name:"b_unpressed", path:"assets/images/Restart_Pressed.png"},
     {name:"b_pressed", path:"assets/images/Restart_Unpressed.png"},
@@ -68,12 +69,16 @@ export let GameData: gameData = {
     {name:"collana", path:"assets/images/collana.png"},
     {name:"shield", path:"assets/images/shield.png"},
     {name:"life", path:"assets/images/life.png"},
+    {name:"phaser", path:"assets/images/phaser.png"},
+    {name:"dcv", path:"assets/images/dcv.png"},
 
 
   ],
   atlas: [],
   sounds: [
-    {name: "music",paths: ["assets/music/simi.ogg", "assets/music/simi.m4a"],},
+    {name: "music",paths: ["assets/music/simi.ogg", "assets/music/simi.m4a"]},
+    {name: "music_flashback",paths: ["assets/music/HighTension.ogg", "assets/music/HighTension.m4a"]},
+    {name: "music_game",paths: ["assets/music/caverna.ogg", "assets/music/caverna.m4a"]},
 
   ],
 
@@ -117,6 +122,11 @@ export let GameData: gameData = {
   
   ]
 };
+
+export let audio_check:audioData = {
+  value:true
+} 
+
 
 export let playerData:playerData = {
   life:1,

@@ -23,6 +23,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite implements IEnemy{
         this._scene.add.existing(this);
         this._scene.physics.world.enableBody(this);
         this._body = this.body as Phaser.Physics.Arcade.Body;
+        this._body.setAllowGravity(true);
         this.setDepth(10);
         this.createAnimation();
         this.setFrame(2)
@@ -67,6 +68,9 @@ export default class Enemy extends Phaser.GameObjects.Sprite implements IEnemy{
         this.dialog = value;
     }
 
+    getOnFloor():boolean{
+        return this._body.onFloor();
+    }
 }
 
 interface animationConfig{

@@ -1,6 +1,8 @@
 import { Tilemaps } from "phaser";
 import { GameData } from "../GameData";
 import { playerData } from "../GameData";
+import { audio_check } from "../GameData";
+import Dialogs from "./Dialog";
 import Flashback from "./FlashBack";
 import Player from "./GameObject/Player/Player";
 
@@ -18,8 +20,9 @@ export default class GamePlay extends Phaser.Scene {
 	private _music: Phaser.Sound.BaseSound;
   private _dotExclamation: Phaser.GameObjects.Text;
   private _space: Phaser.Input.Keyboard.Key;
-
-
+  private _dont_fall: boolean;
+  private Dialog:Dialogs;
+  
   constructor() {
     super({
       key: "GamePlay",
@@ -27,11 +30,32 @@ export default class GamePlay extends Phaser.Scene {
   }
 
 
+  stop_audio():void{
+    this._music.pause();
+  }
+
+  resume_audio():void{
+    this._music.resume();
+  }
+
   create() {
-    this.player = new Player({scene:this, x:200, y:350, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.5);
+    this._dont_fall = true;
+    console.log("gameplay" + playerData.jump);
+    this.player = new Player({scene:this, x:210, y:350, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.5);
     this.FlashBackScene = <Flashback>this.scene.get('FlashBack');
-    this._music = this.sound.add("music", { loop: true, volume: 0.1 });
-    this._music.play();
+    this.FlashBackScene.events.off('audio_resume',this.resume_audio,this);
+    this.FlashBackScene.events.on('audio_resume',this.resume_audio,this);
+
+    this.Dialog = <Dialogs>this.scene.get('Dialog');
+    this.Dialog.events.off('stop_music',this.stop_audio,this);
+    this.Dialog.events.on('stop_music',this.stop_audio,this);
+
+    this._music = this.sound.add("music_game", { loop: true, volume: 5 });
+
+    if(audio_check.value){
+      console.log("ciao musica");
+      this._music.play();
+    }
     this.createMap();
     this._dotExclamation = this.add.text(0,0,"!",{font:"alagard"}).setAlpha(0).setFontSize(40);
     this._space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -59,11 +83,16 @@ export default class GamePlay extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+    //console.log(audio_check.value);
     this.player.updatePlayer(time, delta);
     this.updateMap();
+    /*
     if(!this._music.isPlaying){
-      this._music.play();
-    }
+      if(audio_check.value){
+        console.log(audio_check);
+        this._music.play();
+      }
+    }*/
     if(this.registry.get('zainoUnblocked')){
       this.events.emit('inventoryBag');
       console.log("zainoUnblocked è false")
@@ -79,9 +108,27 @@ export default class GamePlay extends Phaser.Scene {
 
       this.position_bg_exterior();
 
-      if(playerData.jump = -720){
-        this.player.setJump(-720);
+      if(this.player.getVelocity() > 700){
+        if(this._dont_fall){  
+          playerData.life--;
+          this.playerLife();
+          console.log("vite:"+playerData.life);
+          if((this.player.getlife() == 0) && this.player.getfloor()){
+            this.scene.start('GameOver');
+            this.audio.play('Rottura_Delle_Ossa');
+            if(audio_check.value){
+              this._music.stop();
+            }
+          }
+          if(this.player.getfloor()){
+            console.log("tocca terra");
+          }
+          if(this._dont_fall){
+            this._dont_fall = false;
+          }
+        }
       }
+
   }
 
   createMap():void{
@@ -146,11 +193,13 @@ export default class GamePlay extends Phaser.Scene {
         tile.properties.death = false;
       }
       else{
+        /*
         if(this.player.decreaseLife()){
           this.scene.stop();
           this.scene.start('GameOver');
           this.audio.play('Rottura_Delle_Ossa');
-        }
+        }*/
+        this.player.setPosition(210,350);
       }
     }
 
@@ -198,6 +247,18 @@ export default class GamePlay extends Phaser.Scene {
       this.events.emit('textZaino');
       this.scene.pause();
     }
+    if(tile.properties.exit){
+      this.add.tween({
+        targets:this.player,
+        scale:0,
+        duration:500,
+        onComplete: () =>{
+          this.scene.stop();
+          this.scene.stop('Dialog');
+          this.scene.start('win');
+        }
+      })
+    }
 
   }
 
@@ -209,7 +270,7 @@ export default class GamePlay extends Phaser.Scene {
       this.scene.pause();
       this.scene.bringToTop('bossRoom');
       this.scene.bringToTop('Dialog');
-      this._music.stop();
+      //this._music.stop();
     }
     this.map.forEachTile((tileMap:Phaser.Tilemaps.Tile) =>{
       const dist:number = Phaser.Math.Distance.Snake(tile.x, tile.y, tileMap.x, tileMap.y);
@@ -224,8 +285,9 @@ export default class GamePlay extends Phaser.Scene {
   playerUnBLock():void{
     this.player.setDialog(false);
   }
-  playerSetLife(value:number){
-    this.player.setLife(value);
+
+  playerLife():void{
+    this.player.setLife();
   }
 
   updateMap():void{

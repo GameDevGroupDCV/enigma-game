@@ -24,7 +24,9 @@ export default class bossRoom extends Phaser.Scene{
     private bg:Phaser.GameObjects.TileSprite;
     private collana :Phaser.GameObjects.Sprite;
     private bodyCollana:Phaser.Physics.Arcade.Body;
+    private collisionGolem:boolean;
     create(){
+        this.collisionGolem = false;
         this.bg = this.add.tileSprite(0,180,2272, GameData.globals.gameHeight, 'bg1').setDepth(1).setOrigin(0,0);
         
         this.stalattiti = this.add.group();
@@ -33,11 +35,8 @@ export default class bossRoom extends Phaser.Scene{
         this.setupObject();
         this.golem = new Boss({scene: this, x: 1120, y:730, key:'golem'}).setDepth(11);
         this.player = new Player({scene:this, x:100, y:730, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.8).setDepth(11);
-        this.collana = this.add.sprite(0,0,"collana").setDepth(11).setAlpha(0).setInteractive().on(
-            "pointerdown",()=>{
-                console.log("prendi collana");
-            }
-        );
+        this.collana = this.add.sprite(0,0,"collana").setDepth(11).setAlpha(0).setInteractive();
+
         this.physics.world.enableBody(this.collana);
         this.bodyCollana = this.collana.body as Phaser.Physics.Arcade.Body;
         this.bodyCollana.setAllowGravity(false);
@@ -114,16 +113,43 @@ export default class bossRoom extends Phaser.Scene{
                 this.golem.walking = true;
                 this.attackBoolean = true;
             }
+
+            this.player.updatePlayer(time, delta);
+        }
+
+        if(this.collisionGolem){
+            this.collisionGolem = false;
         }
     }
 
     onCollisionGolem():void{
-        
         if(this.player.decreaseLife()){
+            console.log("hai perso tutte le vite")
             this.golem.stop_run_audio();
+            this.scene.stop('GamePlay');
             this.scene.stop();
             this.scene.start('GameOver');
         }
+        else{
+            this.events.emit('decreaseLifeEvent');
+            if(this.player.x >= this.golem.x){
+                this.player.setPosition(this.player.x+70, this.player.y);
+            }
+            else if(this.player.x < this.golem.x){
+                this.player.setPosition(this.player.x-70, this.player.y);
+            }
+            this.add.tween({
+                targets:this.player, 
+                alpha:0,
+                repeat:2, 
+                yoyo:true, 
+                duration:100, 
+                onComplete: ()=>{
+                    this.golem.setAlpha(1);
+                }
+            });
+        }
+        
     }
 
     onCollisionStalattiti(golem:any, stalattite:any):void{
@@ -137,7 +163,7 @@ export default class bossRoom extends Phaser.Scene{
             onComplete: ()=>{
                 this.golem.setAlpha(1);
             }
-        })
+        });
 
         if(this.golem.decreaseLife()){
             this.bossDefeated = true;
@@ -153,6 +179,7 @@ export default class bossRoom extends Phaser.Scene{
     }
 
     onCollisionLayer(player:any, tile:any){
+
         if(tile.properties.boss == true && this.bossDefeated){
             this.scene.stop();
             this.scene.resume('GamePlay');
@@ -160,8 +187,10 @@ export default class bossRoom extends Phaser.Scene{
     }
 
     onCollisionCollana(player:any, collana:any){
-        this.player.setJump(-720);
+        playerData.jump = -720;
         this.collana.destroy(true);
         this.events.emit("collanaEvent")
     }
+
+      
 }

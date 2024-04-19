@@ -82,7 +82,7 @@ export default class Enigma extends Phaser.Scene {
       gem.gem.anims.play('gems-inactive');
 
       gem.lever.on("pointerdown", () =>{
-        this.sound.playAudioSprite("sfx","Attivazione_Della_Leva",{loop:false,volume: 3});
+        this.sound.playAudioSprite("sfx","Attivazione_Della_Leva",{loop:false,volume: 1});
 
         if(!gem.stateLever){
           gem.lever.anims.play('lever-anims');
