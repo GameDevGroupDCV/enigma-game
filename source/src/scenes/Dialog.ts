@@ -50,6 +50,7 @@ export default class Dialogs extends Phaser.Scene {
   private life1:Phaser.GameObjects.Image;
   private life2:Phaser.GameObjects.Image;
   private life3:Phaser.GameObjects.Image;
+  private life4:Phaser.GameObjects.Image;
 
   private life:Array<Phaser.GameObjects.Image>
   
@@ -63,15 +64,16 @@ export default class Dialogs extends Phaser.Scene {
   }
 
   create() {
-    this.life1 = this.add.image(1200, 30, 'life').setScale(2.5).setVisible(false);
-    this.life2 = this.add.image(1225 ,30, 'shield').setScale(2.5).setVisible(false);
-    this.life3 = this.add.image(1250,30, 'shield').setScale(2.5).setVisible(false);
+    this.life1 = this.add.image(1175, 30, 'life').setScale(2.5).setVisible(false);
+    this.life2 = this.add.image(1200 ,30, 'shield').setScale(2.5).setVisible(false);
+    this.life3 = this.add.image(1225,30, 'shield').setScale(2.5).setVisible(false);
+    this.life4 = this.add.image(1250,30, 'shield').setScale(2.5).setVisible(false);
 
-    this.life = [this.life1, this.life2, this.life3];
+    this.life = [this.life1, this.life2, this.life3, this.life4];
 
     this._ring = this.add.image(32,30, 'ring').setVisible(false);
     this._diario = this.add.image(64,30, 'diario').setVisible(false).setScale(.3);
-    this._collana = this.add.image(96, 30, 'collana').setVisible(false);
+    this._collana = this.add.image(128, 30, 'collana').setVisible(false);
 
     this.inventoryArray = [];
     this.graphics();
@@ -302,7 +304,7 @@ export default class Dialogs extends Phaser.Scene {
     this.ring = this.add.image(700, 300, 'ring').setOrigin(0,0).setScale(2).setInteractive();
 
     this.diario.on('pointerdown', () =>{
-      if(playerData.life == 3){
+      if(playerData.life == 4){
         
         this.diario.destroy();
         this.registry.set('diarioValue', true);
@@ -334,7 +336,7 @@ export default class Dialogs extends Phaser.Scene {
 
     this.ring.on('pointerdown', () =>{ 
       console.log("hai cliccato sull'anello");
-      playerData.life = 3;
+      playerData.life = 4;
       this.GamePlay.playerLife();
       this.GamePlay.playerBlock();
       this.ring.destroy();

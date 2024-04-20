@@ -22,7 +22,9 @@ export default class GamePlay extends Phaser.Scene {
   private _space: Phaser.Input.Keyboard.Key;
   private _dont_fall: boolean;
   private Dialog:Dialogs;
-  
+  private light:Phaser.GameObjects.Light;
+  private layerObj:Phaser.Tilemaps.ObjectLayer;
+
   constructor() {
     super({
       key: "GamePlay",
@@ -39,6 +41,9 @@ export default class GamePlay extends Phaser.Scene {
   }
 
   create() {
+    //this.light = this.lights.addLight(0, 0, 1000, 0xffffff, 2).setScrollFactor(1,1);
+    //this.lights.enable().setAmbientColor(0x555555);
+
     this._dont_fall = true;
     console.log("gameplay" + playerData.jump);
     this.player = new Player({scene:this, x:210, y:350, key:'player-idle', life:playerData.life, jump:playerData.jump}).setScale(1.5);
@@ -83,16 +88,11 @@ export default class GamePlay extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    //console.log(audio_check.value);
     this.player.updatePlayer(time, delta);
     this.updateMap();
-    /*
-    if(!this._music.isPlaying){
-      if(audio_check.value){
-        console.log(audio_check);
-        this._music.play();
-      }
-    }*/
+    //this.light.x = this.player.x;
+    //this.light.y = this.player.y;
+
     if(this.registry.get('zainoUnblocked')){
       this.events.emit('inventoryBag');
       console.log("zainoUnblocked è false")
@@ -144,7 +144,7 @@ export default class GamePlay extends Phaser.Scene {
         .setDepth(2).setAlpha(0);
 
     this.layerWorld = this.map.createLayer("world", this.tileset, 0,0)
-        .setDepth(2).setAlpha(9);
+        .setDepth(2).setAlpha(1);
     
     this.backgroundLayer = this.map.createLayer("background", this.tileset, 0,0).setDepth(0);
 
@@ -299,6 +299,26 @@ export default class GamePlay extends Phaser.Scene {
     },this);
     
   }
+
+  /*
+  setupObject(){
+    this.layerObj = this.map.getObjectLayer("gameObject");
+        if (this.layerObj != null) {
+            let _objects: any = this.layerObj.objects as any[];
+            _objects.forEach((tile:Phaser.Tilemaps.Tile) => {
+                console.log(_objects);
+                console.log(tile);
+              var _objectValue = JSON.parse(tile.properties[0].data).data;
+              switch (_objectValue) {
+                case "torch":
+                    this.stalattiti.add(new Stalattite({scene:this, x:tile.x, y:tile.y-20, key:"stalattite"}));
+                    break;
+              }
+              
+            })
+        }
+  }
+  */
 }
 
 

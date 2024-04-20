@@ -24,9 +24,9 @@ export default class Win extends Phaser.Scene {
 private scrollSpeed:number = 2;
 
   create() {
-    this.logoPhaser = this.add.image(1175,520,"phaser").setScale(0.2).setAlpha(1).setDepth(10);
+    this.logoPhaser = this.add.image(1175,520,"phaser").setScale(0.2).setAlpha(0.8).setDepth(10);
     this._logo = this.add.image((this.game.canvas.width / 2),220,"logo").setScale(0.3).setAlpha(0.8).setDepth(10);
-    this.dcv = this.add.image(1195,115,"dcv").setScale(0.06).setAlpha(1).setDepth(10);
+    this.dcv = this.add.image(1195,115,"dcv").setScale(0.06).setAlpha(0.8).setDepth(10);
     this.audio = this.sound.addAudioSprite('sfx', {rate:1.5}) as Phaser.Sound.WebAudioSound;
     this._bg = this.add.tileSprite(0,0,1280,640,"bg1").setOrigin(0,0);
     this._text = [
